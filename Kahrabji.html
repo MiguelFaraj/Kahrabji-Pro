@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="theme-color" content="#1D9E75"/>
+<title>Kahrabji</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.4.0/dist/tabler-icons.min.css"/>
+<style>
+:root{--bg:#f4f5f7;--surface:#fff;--surface2:#f7f8f9;--border:#e8e8e8;--text:#1a1a1a;--text2:#666;--text3:#999;--green:#1D9E75;--green-bg:#E1F5EE;--green-text:#0F6E56;--red:#E24B4A;--red-bg:#FAECE7;--red-text:#993C1D;--blue:#185FA5;--blue-bg:#E6F1FB;--blue-text:#185FA5;--amber:#BA7517;--amber-bg:#FAEEDA;--amber-text:#633806;--shadow:0 1px 3px rgba(0,0,0,.06)}
+[data-theme="dark"]{--bg:#0f1117;--surface:#1c1f26;--surface2:#252830;--border:#2e3140;--text:#f0f2f5;--text2:#9ba3b5;--text3:#6b7385;--green:#1D9E75;--green-bg:#0d2e22;--green-text:#4dd4a0;--red:#E24B4A;--red-bg:#2e1515;--red-text:#f08080;--blue:#3b82f6;--blue-bg:#0d1a2e;--blue-text:#7eb3f8;--amber:#d4a04a;--amber-bg:#2a1f0a;--amber-text:#d4a04a;--shadow:0 1px 4px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;transition:background-color .2s,color .2s,border-color .2s}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:9px}
+.logo{width:32px;height:32px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0}
+.nav-brand span{font-weight:600;font-size:15px;color:var(--text)}
+.nav-r{display:flex;align-items:center;gap:8px}
+.pill{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.pill.admin{background:var(--green-bg);color:var(--green-text)}
+.pill.viewer{background:var(--blue-bg);color:var(--blue-text)}
+.btn-logout{background:none;border:1px solid var(--border);padding:5px 10px;border-radius:8px;font-size:12px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:4px}
+.theme-btn{background:none;border:1px solid var(--border);padding:5px 8px;border-radius:8px;font-size:16px;cursor:pointer;color:var(--text2);display:flex;align-items:center;line-height:1}
+.bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 7px;font-size:9px;color:var(--text3);cursor:pointer;border:none;background:none}
+.btab i{font-size:20px}
+.btab.active{color:var(--green)}
+.page{display:none;padding:16px 14px 90px}
+.page.active{display:block}
+.card{background:var(--surface);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:var(--text)}
+.card-title-l{display:flex;align-items:center;gap:7px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{height:44px;padding:0 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:15px;width:100%;-webkit-appearance:none;appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green)}
+.field input[readonly]{background:var(--surface2);color:var(--text2)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--surface2);border-radius:10px;padding:11px 12px}
+.stat .sl{font-size:10px;color:var(--text2);margin-bottom:3px;font-weight:500}
+.stat .sv{font-size:13px;font-weight:700;color:var(--text)}
+.btn-p{background:var(--green);color:#fff;border:none;padding:13px 18px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-bottom:9px;-webkit-appearance:none}
+.btn-p:active{opacity:.85}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-p.blue{background:var(--blue)}
+.btn-p.wa{background:#25D366}
+.btn-p.amber{background:var(--amber)}
+.btn-p.red{background:var(--red)}
+.btn-p.gray{background:#666}
+.btn-p.sm{padding:8px 12px;font-size:12px;width:auto;margin-bottom:0}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:12px 16px;border-radius:11px;font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-bottom:9px;-webkit-appearance:none}
+.btn-s:active{opacity:.8}
+.btn-row{display:flex;flex-direction:column;gap:0;margin-top:4px}
+.btn-ic{background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:var(--text3);font-size:16px;display:inline-flex;align-items:center}
+.btn-ic.green{color:var(--green)}
+.btn-ic.red{color:var(--red)}
+.al{padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:11px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.al i{flex-shrink:0;font-size:16px;margin-top:1px}
+.al.ok{background:var(--green-bg);color:var(--green-text)}
+.al.err{background:var(--red-bg);color:var(--red-text)}
+.al.info{background:var(--blue-bg);color:var(--blue-text)}
+.al.warn{background:var(--amber-bg);color:var(--amber-text)}
+.r-block{background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px}
+.r-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.r-row:last-child{border-bottom:none}
+.r-row .rl{color:var(--text2)}
+.r-row .rv{font-weight:600;text-align:right;max-width:60%;color:var(--text)}
+.grand{background:var(--green-bg);border-radius:11px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.gl{font-size:12px;font-weight:600;color:var(--green-text)}
+.gv{font-size:20px;font-weight:700;color:var(--green-text)}
+.grand.usd{background:var(--surface2);margin-top:7px}
+.grand.usd .gl{color:var(--text2);font-weight:500}
+.grand.usd .gv{font-size:16px;color:var(--text);font-weight:600}
+.grand.arr{background:var(--red-bg);margin-top:7px}
+.grand.arr .gl{color:var(--red-text)}
+.grand.arr .gv{font-size:17px;color:var(--red-text)}
+.notice{background:var(--amber-bg);border-radius:11px;padding:11px 14px;font-size:13px;color:var(--amber-text);margin-top:12px;display:flex;align-items:flex-start;gap:8px}
+.notice i{font-size:18px;flex-shrink:0;margin-top:1px}
+.paid-stamp{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:2px solid var(--green);border-radius:10px;padding:8px 16px;font-size:14px;font-weight:700;color:var(--green-text);margin-top:12px}
+.cust-status-bar{display:none;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:13px;font-weight:500}
+.cust-status-bar.paid{background:var(--green-bg);color:var(--green-text);border:1.5px solid var(--green);display:flex}
+.cust-status-bar.unpaid{background:var(--red-bg);color:var(--red-text);border:1.5px solid #F0997B;display:flex}
+.cust-status-bar.none{background:var(--blue-bg);color:var(--blue-text);border:1.5px solid var(--blue);display:flex}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
+.dot.paid{background:var(--green)}
+.dot.unpaid{background:var(--red)}
+.dot.none{background:var(--text3)}
+.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
+.spin{display:inline-block;width:14px;height:14px;border:2.5px solid rgba(128,128,128,.2);border-top-color:var(--green);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+.spin.w{border-color:rgba(255,255,255,.3);border-top-color:#fff}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rate-big{font-size:28px;font-weight:700;color:var(--green);margin:6px 0 2px}
+.edit-panel{background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px;display:none}
+.edit-panel.open{display:block}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state i{font-size:44px;margin-bottom:12px;display:block}
+.tag-r{background:var(--red-bg);color:var(--red-text);padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag-g{background:var(--green-bg);color:var(--green-text);padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag-b{background:var(--blue-bg);color:var(--blue-text);padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag-y{background:var(--amber-bg);color:var(--amber-text);padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.meta-tag{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:3px 9px;font-size:11px;color:var(--text2)}
+.cust-item{background:var(--surface2);border-radius:11px;padding:13px 14px;margin-bottom:9px}
+.cust-item-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cust-item-name{font-weight:600;font-size:15px;color:var(--text)}
+.cust-meta{display:flex;flex-wrap:wrap;gap:6px}
+.dstat{background:var(--surface);border-radius:12px;padding:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.dstat .dl{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500}
+.dstat .dv{font-size:22px;font-weight:700;color:var(--text)}
+.dstat .ds{font-size:11px;color:var(--text3);margin-top:2px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.hist-item{background:var(--surface2);border-radius:11px;padding:13px 14px;margin-bottom:9px}
+.hist-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.hist-name{font-weight:600;font-size:14px;color:var(--text)}
+.hist-date{font-size:11px;color:var(--text3)}
+.hist-details{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.overdue-item{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border-radius:11px;background:var(--red-bg);margin-bottom:9px;border:1px solid #F0997B}
+.overdue-name{font-weight:600;font-size:14px;color:var(--red-text)}
+.overdue-meta{font-size:11px;color:var(--red-text);margin-top:2px;opacity:.8}
+.overdue-amt{font-size:18px;font-weight:700;color:var(--red-text)}
+.sec-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;margin-top:4px}
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.filter-bar input,.filter-bar select{height:38px;padding:0 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;flex:1;-webkit-appearance:none;min-width:80px}
+.dd-legend{display:flex;gap:14px;margin-bottom:10px;font-size:11px;color:var(--text2);flex-wrap:wrap}
+.dd-legend-item{display:flex;align-items:center;gap:5px}
+.login-wrap{max-width:420px;margin:0 auto;padding:32px 16px}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:24px 20px 44px;width:100%;max-width:520px;border-top:1px solid var(--border);max-height:90vh;overflow-y:auto}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 20px}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:16px}
+.modal-info{background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:16px}
+
+/* REPORT */
+.report-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.report-stat{background:var(--surface2);border-radius:12px;padding:14px;text-align:center}
+.report-stat .rs-label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.report-stat .rs-value{font-size:22px;font-weight:700;color:var(--text)}
+.report-stat .rs-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.report-bar{height:8px;border-radius:99px;background:var(--border);overflow:hidden;margin:10px 0 4px}
+.report-bar-fill{height:100%;background:var(--green);border-radius:99px;transition:width .5s}
+
+/* BULK WA */
+.bulk-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:var(--surface2);margin-bottom:8px;border:1px solid var(--border)}
+.bulk-item.sent{opacity:.5;border-color:var(--green)}
+.bulk-item-info{flex:1}
+.bulk-item-name{font-weight:600;font-size:14px;color:var(--text)}
+.bulk-item-amt{font-size:12px;color:var(--red-text);margin-top:2px}
+
+/* PORTAL */
+.portal-wrap{max-width:440px;margin:0 auto;padding:20px 16px 80px}
+.portal-header{background:linear-gradient(135deg,var(--green) 0%,#0F6E56 100%);border-radius:16px;padding:24px 20px;margin-bottom:16px;color:#fff}
+.portal-bill-item{background:var(--surface2);border-radius:11px;padding:14px;margin-bottom:10px;border-left:4px solid var(--border)}
+.portal-bill-item.paid{border-left-color:var(--green)}
+.portal-bill-item.unpaid{border-left-color:var(--red)}
+
+/* THERMAL PRINT */
+.thermal-receipt{display:none;font-family:'Courier New',Courier,monospace;font-size:12px;color:#000;background:#fff;width:280px;margin:0 auto;padding:10px 8px;line-height:1.5}
+.thermal-receipt .t-logo{text-align:center;font-size:16px;font-weight:700;margin-bottom:2px;letter-spacing:2px}
+.thermal-receipt .t-sub{text-align:center;font-size:10px;margin-bottom:6px}
+.thermal-receipt .t-div{border-top:1px dashed #000;margin:6px 0}
+.thermal-receipt .t-row{display:flex;justify-content:space-between;font-size:11px;margin:2px 0}
+.thermal-receipt .t-row.bold{font-weight:700}
+.thermal-receipt .t-total{text-align:center;font-size:14px;font-weight:700;margin:6px 0;border-top:2px solid #000;border-bottom:2px solid #000;padding:4px 0}
+.thermal-receipt .t-paid{text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;margin:6px 0;border:2px solid #000;padding:3px}
+.thermal-receipt .t-footer{text-align:center;font-size:10px;margin-top:4px}
+
+@media print{
+  body *{visibility:hidden}
+  .thermal-receipt,.thermal-receipt *,.print-report,.print-report *{visibility:visible}
+  .thermal-receipt{display:block!important;position:fixed;top:0;left:0;width:100%}
+  .print-report{display:block!important;position:fixed;top:0;left:0;width:100%;padding:20px;font-family:sans-serif}
+  .bottom-nav,.nav{display:none!important}
+}
+.print-report{display:none}
+
+/* ── LICENSE SCREENS ── */
+.lic-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:20px}
+.lic-box{background:var(--surface);border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.12);border:1px solid var(--border)}
+.lic-logo{width:64px;height:64px;background:var(--green);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;margin:0 auto 16px}
+.lic-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px}
+.lic-sub{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.5}
+.lic-key-input{height:50px;padding:0 16px;border-radius:12px;border:2px solid var(--border);background:var(--surface);color:var(--text);font-size:16px;width:100%;text-align:center;text-transform:uppercase;letter-spacing:.1em;font-family:'Courier New',monospace;font-weight:700;margin-bottom:14px}
+.lic-key-input:focus{outline:none;border-color:var(--green)}
+
+</style>
+</head>
+<body>
+
+<!-- ── LICENSE SCREEN ── -->
+<div id="license-screen" class="lic-screen" style="display:none">
+  <div class="lic-box">
+    <div class="lic-logo"><i class="ti ti-bolt"></i></div>
+    <div class="lic-title">Kahrabji</div>
+    <div class="lic-sub">Enter your license key to activate</div>
+    <div id="lic-al"></div>
+    <input type="text" class="lic-key-input" id="lic-input" placeholder="KP-XXXX-XXXX-XXXX"
+      oninput="this.value=this.value.toUpperCase()"
+      onkeydown="if(event.key==='Enter')activateLicense()"/>
+    <button class="btn-p" onclick="activateLicense()" id="lic-btn" style="margin-bottom:12px">
+      <i class="ti ti-key"></i> Activate license
+    </button>
+    <p style="font-size:12px;color:var(--text3)">Don't have a key?
+      <a href="https://wa.me/96170234138" target="_blank" style="color:var(--green);font-weight:600">Contact us on WhatsApp</a>
+    </p>
+  </div>
+</div>
+
+<!-- ── EXPIRED SCREEN ── -->
+<div id="expired-screen" class="lic-screen" style="display:none">
+  <div class="lic-box">
+    <div style="font-size:56px;margin-bottom:12px">⏰</div>
+    <div class="lic-title">Subscription Expired</div>
+    <div class="lic-sub">Your Kahrabji subscription has ended. Please renew to continue.</div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:16px;text-align:left">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">License key</div>
+      <div style="font-size:13px;font-weight:700;font-family:'Courier New',monospace;color:var(--text)" id="exp-key"></div>
+      <div style="font-size:12px;color:var(--red-text);margin-top:6px" id="exp-date"></div>
+    </div>
+    <a href="https://wa.me/96170234138?text=Hi%2C%20I%20want%20to%20renew%20my%20Kahrabji%20subscription."
+      target="_blank"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;padding:13px;border-radius:11px;font-size:15px;font-weight:700;margin-bottom:10px;text-decoration:none">
+      <i class="ti ti-brand-whatsapp"></i> Renew via WhatsApp
+    </a>
+    <button class="btn-s" onclick="showScreen('license-screen')" style="width:100%;justify-content:center">
+      <i class="ti ti-key"></i> Enter new license key
+    </button>
+  </div>
+</div>
+
+<!-- ── SUSPENDED SCREEN ── -->
+<div id="suspended-screen" class="lic-screen" style="display:none">
+  <div class="lic-box">
+    <div style="font-size:56px;margin-bottom:12px">⚠️</div>
+    <div class="lic-title">Account Suspended</div>
+    <div class="lic-sub">Your account has been suspended. You can still use the app until your paid period ends.</div>
+    <div style="background:var(--amber-bg);border-radius:12px;padding:12px;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--amber-text);font-weight:500" id="susp-expiry"></div>
+    </div>
+    <a href="https://wa.me/96170234138?text=Hi%2C%20my%20Kahrabji%20account%20is%20suspended."
+      target="_blank"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;padding:13px;border-radius:11px;font-size:15px;font-weight:700;margin-bottom:10px;text-decoration:none">
+      <i class="ti ti-brand-whatsapp"></i> Contact Support
+    </a>
+    <button class="btn-p" onclick="proceedToApp()" style="margin-top:4px;background:var(--amber)">
+      <i class="ti ti-login"></i> Continue to app
+    </button>
+  </div>
+</div>
+
+<!-- ── SETUP REQUIRED SCREEN ── -->
+<div id="setup-screen" class="lic-screen" style="display:none">
+  <div class="lic-box">
+    <div style="font-size:56px;margin-bottom:12px">⚙️</div>
+    <div class="lic-title">Setup in Progress</div>
+    <div class="lic-sub" id="setup-msg">Your account is active but not fully configured yet. Please contact support to complete your setup.</div>
+    <a href="https://wa.me/96170234138?text=Hi%2C%20my%20Kahrabji%20account%20needs%20setup%20completion."
+      target="_blank"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;padding:13px;border-radius:11px;font-size:15px;font-weight:700;text-decoration:none">
+      <i class="ti ti-brand-whatsapp"></i> Contact Support (+961 70 234 138)
+    </a>
+  </div>
+</div>
+
+<!-- ── CHECKING SCREEN ── -->
+<div id="checking-screen" class="lic-screen" style="display:none">
+  <div class="lic-box">
+    <div class="lic-logo"><i class="ti ti-bolt"></i></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text2);font-size:15px;padding:10px 0">
+      <span class="spin" style="width:20px;height:20px;border-width:3px"></span> Verifying license...
+    </div>
+    <p style="font-size:12px;color:var(--text3);margin-top:8px">Please wait while we check your subscription</p>
+  </div>
+</div>
+
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="logo" style="width:48px;height:48px;font-size:24px"><i class="ti ti-bolt"></i></div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--text)">Kahrabji</div>
+        <div style="font-size:12px;color:var(--text2)">Electricity management system</div>
+      </div>
+    </div>
+    <div id="login-al"></div>
+    <div class="field"><label>Username</label><input type="text" id="lu" placeholder="Enter your username" autocomplete="username"/></div>
+    <div class="field"><label>Password</label><input type="password" id="lp" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="btn-p" onclick="doLogin()"><i class="ti ti-login"></i> Sign in</button>
+    </div>
+    <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:16px">Contact your administrator if you need access.</p>
+  </div>
+</div>
+
+<!-- CUSTOMER PORTAL (no login needed) -->
+<div id="portal-screen" style="display:none">
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="logo"><i class="ti ti-bolt"></i></div>
+      <span>My Bills</span>
+    </div>
+    <div class="nav-r">
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn2" title="Toggle theme">🌙</button>
+      <button class="btn-s" onclick="portalLogout()" style="padding:5px 10px;font-size:12px;margin-bottom:0"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+  <div class="portal-wrap">
+    <div id="portal-login-section">
+      <div style="text-align:center;padding:30px 0 20px">
+        <div class="logo" style="width:56px;height:56px;font-size:28px;margin:0 auto 12px"><i class="ti ti-bolt"></i></div>
+        <p style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px">Customer Portal</p>
+        <p style="font-size:13px;color:var(--text2)">Enter your phone number to view your bills</p>
+      </div>
+      <div id="portal-al"></div>
+      <div class="field"><label>Your WhatsApp phone number</label><input type="tel" id="portal-phone" placeholder="e.g. 96170123456" onkeydown="if(event.key==='Enter')portalVerify()"/></div>
+      <div class="btn-row">
+        <button class="btn-p" onclick="portalVerify()" id="portal-verify-btn"><i class="ti ti-search"></i> Find my account</button>
+      </div>
+      <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:12px">Use the same number registered with the generator service.</p>
+    </div>
+    <div id="portal-data-section" style="display:none">
+      <div class="portal-header">
+        <div style="font-size:11px;opacity:.8;margin-bottom:4px;letter-spacing:.05em">WELCOME BACK</div>
+        <div style="font-size:22px;font-weight:700;margin-bottom:2px" id="portal-cust-name"></div>
+        <div style="font-size:13px;opacity:.85" id="portal-cust-meta"></div>
+        <div style="margin-top:14px;display:flex;gap:20px">
+          <div><div style="font-size:11px;opacity:.8">Current balance</div><div style="font-size:20px;font-weight:700" id="portal-balance"></div></div>
+          <div><div style="font-size:11px;opacity:.8">Total bills</div><div style="font-size:20px;font-weight:700" id="portal-bill-count"></div></div>
+        </div>
+      </div>
+      <div id="portal-outstanding-warn" class="al warn" style="display:none"><i class="ti ti-alert-triangle"></i><span id="portal-outstanding-text"></span></div>
+      <div class="sec-label">Bill history</div>
+      <div id="portal-history-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none">
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="logo"><i class="ti ti-bolt"></i></div>
+      <span>Kahrabji</span>
+    </div>
+    <div class="nav-r">
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+      <span class="pill" id="nav-badge"></span>
+      <button class="btn-logout" onclick="doLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+
+  <!-- RECEIPT PAGE -->
+  <div class="page active" id="page-receipt">
+    <div id="sheet-status"></div>
+    <div class="card" id="form-card">
+      <div class="card-title">
+        <div class="card-title-l"><i class="ti ti-file-invoice"></i> New receipt</div>
+        <button class="btn-p sm" onclick="loadCustomers()" style="background:var(--surface2);color:var(--text2);font-size:12px;border:1px solid var(--border)"><i class="ti ti-refresh"></i></button>
+      </div>
+      <div class="dd-legend">
+        <div class="dd-legend-item"><span class="dot paid"></span> Paid</div>
+        <div class="dd-legend-item"><span class="dot unpaid"></span> Unpaid</div>
+        <div class="dd-legend-item"><span class="dot none"></span> Not billed</div>
+      </div>
+      <div class="field"><label>Customer name</label>
+        <select id="cust-sel" onchange="onCustSelect()"><option value="">— select customer —</option></select>
+      </div>
+      <div class="cust-status-bar" id="cust-status-bar">
+        <span id="cust-status-text"></span><span id="cust-status-icon"></span>
+      </div>
+      <div id="bill-blocked-warn" class="al warn" style="display:none">
+        <i class="ti ti-alert-triangle"></i><span id="bill-blocked-text"></span>
+      </div>
+      <div id="bill-fields" style="display:none">
+        <div class="g2">
+          <div class="field"><label>Amperes</label><input type="number" id="f-amp" placeholder="e.g. 5"/></div>
+          <div class="field"><label>Monthly sub (LBP)</label><input type="number" id="f-sub" placeholder="300,000" oninput="calc()"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW last month</label><input type="number" id="f-okw" placeholder="e.g. 1240" oninput="calc()"/></div>
+          <div class="field"><label>KW this month</label><input type="number" id="f-nkw" placeholder="e.g. 1380" oninput="calc()"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW consumption (auto)</label><input type="number" id="f-cons" readonly/></div>
+          <div class="field"><label>KW price (LBP/KW)</label><input type="number" id="f-kwp" placeholder="2,500" oninput="calc()"/></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="sl">KW charges</div><div class="sv" id="s-kw">—</div></div>
+          <div class="stat"><div class="sl">Total (LBP)</div><div class="sv" id="s-lbp">—</div></div>
+          <div class="stat"><div class="sl">Total (USD)</div><div class="sv" id="s-usd">—</div><div class="sl" id="s-rn"></div></div>
+        </div>
+        <div id="overdue-warn" class="al warn" style="display:none"><i class="ti ti-alert-triangle"></i><span id="overdue-warn-text"></span></div>
+        <div id="viewer-warn" class="al warn" style="display:none"><i class="ti ti-lock"></i> Viewer — cannot save changes.</div>
+      </div>
+      <div class="btn-row" id="form-btn-row" style="display:none">
+        <button class="btn-p" id="generate-btn" onclick="generateReceipt()"><i class="ti ti-file-check"></i> Generate receipt</button>
+        <button class="btn-p amber" id="override-btn" onclick="overrideBilling()" style="display:none"><i class="ti ti-alert-triangle"></i> Generate anyway (override)</button>
+        <button class="btn-s" onclick="clearForm()"><i class="ti ti-refresh"></i> Clear</button>
+      </div>
+    </div>
+
+    <!-- DIGITAL RECEIPT -->
+    <div id="receipt-out" style="display:none">
+      <div class="card" style="border-top:4px solid var(--green)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <div class="logo" style="width:28px;height:28px;font-size:14px"><i class="ti ti-bolt"></i></div>
+              <span style="font-size:16px;font-weight:700;color:var(--text)">Electricity Receipt</span>
+            </div>
+            <p style="font-size:12px;color:var(--text2)" id="r-date"></p>
+          </div>
+          <div style="text-align:right">
+            <p style="font-size:15px;font-weight:700;color:var(--text)" id="r-name"></p>
+            <p style="font-size:12px;color:var(--text2)" id="r-amp"></p>
+          </div>
+        </div>
+        <div class="r-block">
+          <div class="r-row"><span class="rl">Monthly subscription</span><span class="rv" id="r-sub"></span></div>
+          <div class="r-row"><span class="rl">KW last month</span><span class="rv" id="r-okw"></span></div>
+          <div class="r-row"><span class="rl">KW this month</span><span class="rv" id="r-nkw"></span></div>
+          <div class="r-row"><span class="rl">KW consumption</span><span class="rv" id="r-cons"></span></div>
+          <div class="r-row"><span class="rl">KW price</span><span class="rv" id="r-kwp"></span></div>
+          <div class="r-row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:9px">
+            <span class="rl">KW charges (consumption × price)</span><span class="rv" id="r-kwt"></span>
+          </div>
+          <div class="r-row"><span class="rl">Monthly subscription</span><span class="rv" id="r-sub2"></span></div>
+        </div>
+        <div class="grand"><span class="gl">Total due (LBP)</span><span class="gv" id="r-tlbp"></span></div>
+        <div class="grand usd"><span class="gl" id="r-rl">Total due (USD)</span><span class="gv" id="r-tusd"></span></div>
+        <div id="r-arr" style="display:none">
+          <div class="sep"></div>
+          <div class="r-row"><span class="rl" style="color:var(--red-text)">Previous unpaid balance (USD)</span><span class="rv" style="color:var(--red-text)" id="r-prev"></span></div>
+          <div class="grand arr"><span class="gl">Total incl. arrears (USD)</span><span class="gv" id="r-grand"></span></div>
+        </div>
+        <div id="paid-stamp" style="display:none">
+          <div class="sep"></div>
+          <div class="paid-stamp"><i class="ti ti-circle-check"></i> PAID — <span id="paid-stamp-date"></span></div>
+        </div>
+        <div class="notice"><i class="ti ti-calendar-due"></i><span>Payment must be made before the <strong>8th of each month</strong>.</span></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn-p gray" onclick="window.print()"><i class="ti ti-printer"></i> Print thermal receipt</button>
+          <button class="btn-p blue" id="save-btn" onclick="saveBilling()"><i class="ti ti-table-export"></i> Save & update sheet</button>
+          <button class="btn-p wa" id="wa-btn" onclick="openWALangModal('bill')" style="display:none"><i class="ti ti-brand-whatsapp"></i> Send via WhatsApp</button>
+          <button class="btn-s" onclick="closeReceipt()"><i class="ti ti-x"></i> Close</button>
+        </div>
+        <div id="save-al" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- THERMAL RECEIPT (print only) -->
+    <div class="thermal-receipt" id="thermal-receipt">
+      <div class="t-logo">⚡ GENERATOR</div>
+      <div class="t-sub">ELECTRICITY RECEIPT</div>
+      <div class="t-div"></div>
+      <div class="t-row"><span>Date:</span><span id="th-date"></span></div>
+      <div class="t-row"><span>Customer:</span><span id="th-name"></span></div>
+      <div class="t-row"><span>Amperes:</span><span id="th-amp"></span></div>
+      <div class="t-div"></div>
+      <div class="t-row"><span>KW Last:</span><span id="th-okw"></span></div>
+      <div class="t-row"><span>KW This:</span><span id="th-nkw"></span></div>
+      <div class="t-row bold"><span>Consumed:</span><span id="th-cons"></span></div>
+      <div class="t-row"><span>KW Price:</span><span id="th-kwp"></span></div>
+      <div class="t-row"><span>KW Charges:</span><span id="th-kwt"></span></div>
+      <div class="t-div"></div>
+      <div class="t-row"><span>Monthly Sub:</span><span id="th-sub"></span></div>
+      <div class="t-div"></div>
+      <div class="t-total" id="th-total"></div>
+      <div class="t-row"><span>USD Equiv:</span><span id="th-usd"></span></div>
+      <div id="th-arr-block" style="display:none">
+        <div class="t-div"></div>
+        <div class="t-row"><span>Prev. Balance:</span><span id="th-prev"></span></div>
+        <div class="t-row bold"><span>GRAND TOTAL:</span><span id="th-grand"></span></div>
+      </div>
+      <div class="t-div"></div>
+      <div id="th-paid-line" style="display:none">
+        <div class="t-paid">*** PAID ***</div>
+        <div class="t-row" style="justify-content:center"><span id="th-paid-date"></span></div>
+      </div>
+      <div class="t-div"></div>
+      <div class="t-footer">Pay before the 8th of each month</div>
+      <div class="t-footer">Thank you for your payment!</div>
+      <div class="t-footer">Rate: <span id="th-rate"></span> LBP/USD</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page" id="page-dashboard">
+    <div id="dash-al"></div>
+    <div class="dash-grid">
+      <div class="dstat"><div class="dl">Total billed (USD)</div><div class="dv" id="d-tusd">—</div><div class="ds">all time</div></div>
+      <div class="dstat"><div class="dl">Collected (USD)</div><div class="dv" id="d-collected" style="color:var(--green)">—</div><div class="ds">paid</div></div>
+      <div class="dstat"><div class="dl">Receipts</div><div class="dv" id="d-count">—</div><div class="ds">issued</div></div>
+      <div class="dstat"><div class="dl">Outstanding</div><div class="dv" id="d-out" style="color:var(--red)">—</div><div class="ds">unpaid</div></div>
+    </div>
+
+    <!-- BULK WHATSAPP -->
+    <div class="card" id="bulk-wa-card" style="display:none">
+      <div class="card-title">
+        <div class="card-title-l" style="color:var(--red-text)"><i class="ti ti-users-group"></i> Bulk WhatsApp reminders</div>
+        <span id="bulk-count" class="tag-r"></span>
+      </div>
+      <div id="bulk-al"></div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <select id="bulk-lang" style="height:38px;padding:0 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;flex:1;-webkit-appearance:none">
+          <option value="en">🇬🇧 English</option>
+          <option value="ar">🇱🇧 Arabic</option>
+          <option value="fr">🇫🇷 French</option>
+        </select>
+        <button class="btn-p wa" onclick="startBulkWA()" style="flex:1;margin-bottom:0;padding:10px"><i class="ti ti-send"></i> Send one by one</button>
+        <button class="btn-p blue" onclick="copyAllMessages()" style="flex:1;margin-bottom:0;padding:10px"><i class="ti ti-copy"></i> Copy all messages</button>
+      </div>
+      <div id="bulk-list"></div>
+    </div>
+
+    <div id="overdue-section" style="display:none">
+      <div class="sec-label" style="color:var(--red)"><i class="ti ti-alert-triangle"></i> Overdue customers</div>
+      <div id="overdue-list"></div>
+    </div>
+    <div class="sec-label">All customers this month</div>
+    <div id="dash-list"></div>
+    <button class="btn-s" onclick="loadDashboard()" style="margin-top:4px"><i class="ti ti-refresh"></i> Refresh</button>
+  </div>
+
+  <!-- HISTORY PAGE -->
+  <div class="page" id="page-history">
+    <div class="filter-bar">
+      <input type="text" id="hist-search" placeholder="Search..." oninput="filterHistory()" style="background:var(--surface);color:var(--text)"/>
+      <select id="hist-month" onchange="filterHistory()" style="background:var(--surface);color:var(--text)"><option value="">All months</option></select>
+      <select id="hist-status" onchange="filterHistory()" style="background:var(--surface);color:var(--text)">
+        <option value="">All</option><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option>
+      </select>
+    </div>
+    <div id="hist-al"></div>
+    <div id="hist-list"></div>
+    <div id="hist-empty" class="empty-state" style="display:none"><i class="ti ti-history"></i><p>No history records yet.</p></div>
+    <button class="btn-s" onclick="loadHistory()" style="margin-top:4px"><i class="ti ti-refresh"></i> Refresh</button>
+  </div>
+
+  <!-- REPORTS PAGE -->
+  <div class="page" id="page-reports">
+    <div class="card">
+      <div class="card-title"><div class="card-title-l"><i class="ti ti-chart-bar"></i> Monthly report</div></div>
+      <div class="field">
+        <label>Select month</label>
+        <select id="report-month-sel" onchange="loadReport()" style="background:var(--surface);color:var(--text)">
+          <option value="">— select month —</option>
+        </select>
+      </div>
+    </div>
+    <div id="report-al"></div>
+    <div id="report-content" style="display:none">
+      <div class="report-stat-grid">
+        <div class="report-stat"><div class="rs-label">Total billed</div><div class="rs-value" id="rp-billed" style="color:var(--text)">—</div><div class="rs-sub">USD</div></div>
+        <div class="report-stat"><div class="rs-label">Collected</div><div class="rs-value" id="rp-collected" style="color:var(--green)">—</div><div class="rs-sub">USD paid</div></div>
+        <div class="report-stat"><div class="rs-label">Pending</div><div class="rs-value" id="rp-pending" style="color:var(--red)">—</div><div class="rs-sub">USD unpaid</div></div>
+        <div class="report-stat"><div class="rs-label">Customers</div><div class="rs-value" id="rp-total">—</div><div class="rs-sub" id="rp-paid-count"></div></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--text2)">Collection rate</span>
+          <span style="font-size:13px;font-weight:700;color:var(--green)" id="rp-rate-pct">—</span>
+        </div>
+        <div class="report-bar"><div class="report-bar-fill" id="rp-bar" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3)">
+          <span id="rp-paid-lbl">Paid</span><span id="rp-unpaid-lbl">Unpaid</span>
+        </div>
+      </div>
+      <div class="sec-label">Per customer breakdown</div>
+      <div id="report-cust-list"></div>
+      <button class="btn-p gray" onclick="printReport()" style="margin-top:4px"><i class="ti ti-printer"></i> Print report</button>
+    </div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div class="page" id="page-settings">
+    <div id="s-admin">
+      <div class="sec-label">Exchange rate</div>
+      <div class="card">
+        <div class="rate-big" id="rate-disp">89,500 LBP</div>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">per 1 USD</p>
+        <div class="field"><label>New rate (LBP per USD)</label><input type="number" id="new-rate" placeholder="e.g. 89500"/></div>
+        <div id="rate-al"></div>
+        <button class="btn-p" onclick="updateRate()"><i class="ti ti-check"></i> Update rate</button>
+      </div>
+      <div class="sec-label">Customer portal link</div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Share this link with customers so they can view their own bills by entering their phone number.</p>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px;font-size:12px;color:var(--text2);word-break:break-all;margin-bottom:12px" id="portal-link-display"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-p sm" onclick="copyPortalLink()"><i class="ti ti-copy"></i> Copy link</button>
+          <button class="btn-p wa sm" onclick="sharePortalLink()"><i class="ti ti-brand-whatsapp"></i> Share</button>
+        </div>
+        <div id="portal-link-al" style="margin-top:8px"></div>
+      </div>
+      <div class="sec-label">Customer management</div>
+      <div id="cust-al"></div>
+      <button class="btn-p" onclick="toggleAddCust()"><i class="ti ti-plus"></i> Add new customer</button>
+      <div class="edit-panel" id="add-cust-form">
+        <p style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">New customer</p>
+        <div class="field"><label>Full name</label><input type="text" id="cn-name" placeholder="e.g. Ahmad Khalil"/></div>
+        <div class="g2">
+          <div class="field"><label>Amperes</label><input type="number" id="cn-amp" placeholder="5"/></div>
+          <div class="field"><label>Monthly sub (LBP)</label><input type="number" id="cn-sub" placeholder="300000"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW price (LBP)</label><input type="number" id="cn-kwp" placeholder="2500"/></div>
+          <div class="field"><label>Remaining (USD)</label><input type="number" id="cn-prev" value="0"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW last month</label><input type="number" id="cn-okw" value="0"/></div>
+          <div class="field"><label>KW this month</label><input type="number" id="cn-nkw" value="0"/></div>
+        </div>
+        <div class="field"><label>Phone (WhatsApp, e.g. 96170123456)</label><input type="tel" id="cn-phone" placeholder="96170123456"/></div>
+        <div class="btn-row">
+          <button class="btn-p" onclick="saveNewCust()" id="add-cust-btn"><i class="ti ti-check"></i> Save to sheet</button>
+          <button class="btn-s" onclick="toggleAddCust()">Cancel</button>
+        </div>
+      </div>
+      <div id="cust-list" style="margin-top:4px"></div>
+      <div class="edit-panel" id="edit-cust-form">
+        <p style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">Edit customer</p>
+        <input type="hidden" id="ed-row"/><input type="hidden" id="ed-idx"/>
+        <div class="field"><label>Full name</label><input type="text" id="ed-name"/></div>
+        <div class="g2">
+          <div class="field"><label>Amperes</label><input type="number" id="ed-amp"/></div>
+          <div class="field"><label>Monthly sub (LBP)</label><input type="number" id="ed-sub"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW price (LBP)</label><input type="number" id="ed-kwp"/></div>
+          <div class="field"><label>Remaining (USD)</label><input type="number" id="ed-prev"/></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>KW last month</label><input type="number" id="ed-okw"/></div>
+          <div class="field"><label>KW this month</label><input type="number" id="ed-nkw"/></div>
+        </div>
+        <div class="field"><label>Phone (WhatsApp)</label><input type="tel" id="ed-phone"/></div>
+        <div id="edit-al"></div>
+        <div class="btn-row">
+          <button class="btn-p" onclick="saveEditCust()" id="edit-cust-btn"><i class="ti ti-check"></i> Save changes</button>
+          <button class="btn-s" onclick="document.getElementById('edit-cust-form').classList.remove('open')">Cancel</button>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="sec-label">App users</div>
+      <div class="card"><div id="users-list"></div></div>
+      <div class="sec-label" style="margin-top:14px">Add app user</div>
+      <div class="card">
+        <div class="field"><label>Username</label><input type="text" id="nu" placeholder="e.g. karim"/></div>
+        <div class="field"><label>Password</label><input type="password" id="np" placeholder="Password"/></div>
+        <div class="field"><label>Role</label>
+          <select id="nr"><option value="viewer">Viewer — view & print only</option><option value="admin">Admin — full access</option></select>
+        </div>
+        <div id="user-al"></div>
+        <button class="btn-p" onclick="addUser()"><i class="ti ti-plus"></i> Add user</button>
+      </div>
+    </div>
+    <div id="s-viewer" style="display:none">
+      <div class="empty-state" style="margin-top:60px"><i class="ti ti-lock"></i><p>Settings are only available<br>to administrators.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT REPORT (hidden, print only) -->
+<div class="print-report" id="print-report-content"></div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="payment-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><i class="ti ti-cash" style="color:var(--amber)"></i> Payment received?</div>
+    <p class="modal-sub">Confirm that <strong id="pay-cust-name-modal"></strong> has paid their bill.</p>
+    <div class="modal-info">
+      <div class="r-row"><span class="rl">Amount due (USD)</span><span class="rv" id="pay-amount-due">—</span></div>
+      <div class="r-row"><span class="rl">Payment date</span><span class="rv" id="pay-date-disp">—</span></div>
+    </div>
+    <div id="pay-al"></div>
+    <div class="btn-row">
+      <button class="btn-p" id="confirm-pay-btn" onclick="confirmPayment()"><i class="ti ti-circle-check"></i> Yes — payment received</button>
+      <button class="btn-s" onclick="closePaymentModal()"><i class="ti ti-x"></i> No — not yet</button>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP LANGUAGE MODAL -->
+<div class="modal-overlay" id="wa-lang-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i> <span id="wa-modal-title">Send WhatsApp</span></div>
+    <p class="modal-sub" id="wa-modal-sub">Choose language:</p>
+    <div class="btn-row">
+      <button class="btn-p wa" onclick="sendWA('en')">🇬🇧 English</button>
+      <button class="btn-p wa" onclick="sendWA('ar')" style="background:#1a7a4a">🇱🇧 عربي — Arabic</button>
+      <button class="btn-p wa" onclick="sendWA('fr')" style="background:#0d5c8a">🇫🇷 Français — French</button>
+      <button class="btn-s" onclick="document.getElementById('wa-lang-modal').classList.remove('open')"><i class="ti ti-x"></i> Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="btab active" data-page="receipt" onclick="showPage('receipt')"><i class="ti ti-file-invoice"></i><span>Receipt</span></button>
+  <button class="btab" data-page="dashboard" onclick="showPage('dashboard')"><i class="ti ti-chart-bar"></i><span>Dashboard</span></button>
+  <button class="btab" data-page="history" onclick="showPage('history')"><i class="ti ti-history"></i><span>History</span></button>
+  <button class="btab" data-page="reports" onclick="showPage('reports')"><i class="ti ti-report"></i><span>Reports</span></button>
+  <button class="btab" data-page="settings" onclick="showPage('settings')"><i class="ti ti-settings"></i><span>Settings</span></button>
+</div>
+
+<script>
+// API is set dynamically after license validation
+let API = localStorage.getItem('kahrabji_script_url') || '';
+const S={rate:89500,currentUser:null,customers:[],history:[],lastReceipt:null,waContext:'bill',bulkUnpaid:[],bulkIdx:0,reportData:null,users:[{username:'admin',password:'admin123',role:'admin'},{username:'viewer',password:'view123',role:'viewer'}]};
+
+// ── THEME ──
+function initTheme(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);['theme-btn','theme-btn2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=t==='dark'?'☀️':'🌙'});}
+function toggleTheme(){const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);['theme-btn','theme-btn2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=t==='dark'?'☀️':'🌙'});}
+initTheme();
+
+// ── HELPERS ──
+function ph(v){return String(v||'').trim();}
+function fmtDate(d){if(!d)return '';try{const dt=new Date(d);if(isNaN(dt))return String(d);return dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}catch(e){return String(d);}}
+function nowDate(){return new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}
+function fmt(n){return Math.round(n||0).toLocaleString('en-US');}
+function fmtU(n){return '$'+parseFloat(n||0).toFixed(2);}
+function setAl(id,type,msg){const e=document.getElementById(id);if(e)e.innerHTML=`<div class="al ${type}"><i class="ti ti-${type==='ok'?'check':type==='err'?'alert-circle':'info-circle'}"></i><span>${msg}</span></div>`;}
+function clearAl(id,ms=3500){setTimeout(()=>{const e=document.getElementById(id);if(e)e.innerHTML='';},ms);}
+async function apiGet(a){const r=await fetch(`${API}?action=${a}`);return JSON.parse(await r.text());}
+async function apiPost(b){const r=await fetch(API,{method:'POST',body:JSON.stringify(b)});return JSON.parse(await r.text());}
+function statusPrefix(s){if(s==='Paid')return '🟢 ';if(s==='Unpaid')return '🔴 ';return '⚪ ';}
+
+// ── PORTAL ──
+function checkPortalMode(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('portal')==='1'){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('portal-screen').style.display='block';
+    document.getElementById('bottom-nav').style.display='none';
+  }
+}
+checkPortalMode();
+
+async function portalVerify(){
+  const phone=document.getElementById('portal-phone').value.trim();
+  if(!phone){setAl('portal-al','err','Please enter your phone number.');return;}
+  const btn=document.getElementById('portal-verify-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Looking up...';
+  try{
+    const d=await apiPost({action:'getCustomerByPhone',phone});
+    if(!d.ok)throw new Error(d.error||'No account found for this phone number.');
+    document.getElementById('portal-login-section').style.display='none';
+    document.getElementById('portal-data-section').style.display='block';
+    const c=d.customer;
+    document.getElementById('portal-cust-name').textContent=c.name;
+    document.getElementById('portal-cust-meta').textContent=c.amperes+'A • Sub: '+fmt(c.sub)+' LBP/month';
+    const rem=parseFloat(c.remaining)||0;
+    document.getElementById('portal-balance').textContent=rem>0?fmtU(rem):'$0.00';
+    document.getElementById('portal-bill-count').textContent=d.history.length;
+    const ow=document.getElementById('portal-outstanding-warn');
+    if(rem>0){ow.style.display='flex';document.getElementById('portal-outstanding-text').textContent='You have an outstanding balance of '+fmtU(rem)+'. Please pay before the 8th of the month.';}
+    else ow.style.display='none';
+    const histList=document.getElementById('portal-history-list');
+    if(!d.history.length){histList.innerHTML='<div class="empty-state"><i class="ti ti-history"></i><p>No bills yet.</p></div>';return;}
+    histList.innerHTML=[...d.history].reverse().map(h=>`
+      <div class="portal-bill-item ${h.status==='Paid'?'paid':'unpaid'}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div>
+            <div style="font-weight:600;font-size:14px;color:var(--text)">${fmtDate(h.date)}</div>
+            <div style="font-size:12px;color:var(--text2)">Consumed: ${fmt(h.consumption)} KW</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:16px;font-weight:700;color:var(--text)">${fmtU(h.grandTotal)}</div>
+            ${h.status==='Paid'?`<span class="tag-g" style="font-size:10px">✅ Paid ${fmtDate(h.paidDate)}</span>`:'<span class="tag-r" style="font-size:10px">🔴 Unpaid</span>'}
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="meta-tag">Sub: ${fmt(h.sub)} LBP</span>
+          <span class="meta-tag">KW charges: ${fmt(h.kwCharges)} LBP</span>
+          <span class="meta-tag">Total: ${fmt(h.totalLBP)} LBP</span>
+        </div>
+      </div>`).join('');
+  }catch(e){setAl('portal-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-search"></i> Find my account';
+}
+function portalLogout(){document.getElementById('portal-login-section').style.display='block';document.getElementById('portal-data-section').style.display='none';document.getElementById('portal-phone').value='';document.getElementById('portal-al').innerHTML='';}
+
+function getPortalLink(){return window.location.href.split('?')[0]+'?portal=1';}
+function copyPortalLink(){navigator.clipboard.writeText(getPortalLink()).then(()=>{setAl('portal-link-al','ok','Link copied!');clearAl('portal-link-al');}).catch(()=>alert(getPortalLink()));}
+function sharePortalLink(){window.open('https://wa.me/?text='+encodeURIComponent('View your electricity bills here: '+getPortalLink()),'_blank');}
+function initPortalLink(){const el=document.getElementById('portal-link-display');if(el)el.textContent=getPortalLink();}
+
+// ── LOAD CUSTOMERS ──
+async function loadCustomers(){
+  const st=document.getElementById('sheet-status');
+  if(st)st.innerHTML='<div class="al info"><span class="spin"></span> Loading customers...</div>';
+  try{
+    const d=await apiPost({action:'getCustomersWithStatus'});
+    if(!d.ok)throw new Error(d.error||'Failed');
+    S.customers=d.customers||[];
+    populateDropdown();renderCustList();
+    if(st){st.innerHTML=`<div class="al ok"><i class="ti ti-check"></i> ${S.customers.length} customers loaded.</div>`;setTimeout(()=>st.innerHTML='',3000);}
+  }catch(e){if(st)st.innerHTML=`<div class="al err"><i class="ti ti-alert-circle"></i> ${e.message}</div>`;}
+}
+
+function populateDropdown(){
+  const sel=document.getElementById('cust-sel'),cur=sel.value;
+  sel.innerHTML='<option value="">— select customer —</option>';
+  const sorted=[...S.customers].map((c,i)=>({...c,origIdx:i})).sort((a,b)=>({Unpaid:0,None:1,Paid:2}[a.billStatus]||1)-({Unpaid:0,None:1,Paid:2}[b.billStatus]||1));
+  sorted.forEach(c=>{const o=document.createElement('option');o.value=c.origIdx;o.textContent=statusPrefix(c.billStatus)+c.name;sel.appendChild(o);});
+  if(cur!=='')sel.value=cur;
+}
+
+function onCustSelect(){
+  const idx=document.getElementById('cust-sel').value;
+  const sb=document.getElementById('cust-status-bar'),bf=document.getElementById('bill-fields'),fbr=document.getElementById('form-btn-row'),gb=document.getElementById('generate-btn'),ob=document.getElementById('override-btn'),bw=document.getElementById('bill-blocked-warn');
+  if(idx===''){sb.className='cust-status-bar';bf.style.display='none';fbr.style.display='none';bw.style.display='none';clearFormFields();return;}
+  const c=S.customers[idx];
+  document.getElementById('f-amp').value=c.amperes||'';document.getElementById('f-sub').value=c.sub||'';document.getElementById('f-kwp').value=c.kwPrice||'';document.getElementById('f-okw').value=c.kwLast||'';document.getElementById('f-nkw').value=c.kwThis||'';
+  fbr.style.display='flex';fbr.style.flexDirection='column';
+  if(c.billStatus==='Paid'){
+    sb.className='cust-status-bar paid';document.getElementById('cust-status-text').innerHTML=`✅ &nbsp;<strong>${c.name}</strong> has paid this month (${fmtU(c.billTotal)})`;
+    bf.style.display='none';bw.style.display='flex';document.getElementById('bill-blocked-text').textContent='This customer already paid this month. Use override to generate another bill.';
+    gb.style.display='none';ob.style.display='flex';
+  } else if(c.billStatus==='Unpaid'){
+    sb.className='cust-status-bar unpaid';document.getElementById('cust-status-text').innerHTML=`🔴 &nbsp;<strong>${c.name}</strong> was billed but has not paid yet`;
+    bf.style.display='block';bw.style.display='none';gb.style.display='flex';ob.style.display='none';
+    const rem=parseFloat(c.remaining)||0,ow=document.getElementById('overdue-warn');
+    if(rem>0){ow.style.display='flex';document.getElementById('overdue-warn-text').textContent=`${c.name} has an unpaid balance of ${fmtU(rem)}.`;}else ow.style.display='none';
+  } else {
+    sb.className='cust-status-bar none';document.getElementById('cust-status-text').innerHTML=`⚪ &nbsp;<strong>${c.name}</strong> has not been billed this month yet`;
+    bf.style.display='block';bw.style.display='none';gb.style.display='flex';ob.style.display='none';
+    const rem=parseFloat(c.remaining)||0,ow=document.getElementById('overdue-warn');
+    if(rem>0){ow.style.display='flex';document.getElementById('overdue-warn-text').textContent=`${c.name} has an unpaid balance of ${fmtU(rem)} from a previous bill.`;}else ow.style.display='none';
+  }
+  calc();
+}
+function overrideBilling(){document.getElementById('bill-blocked-warn').style.display='none';document.getElementById('bill-fields').style.display='block';document.getElementById('generate-btn').style.display='flex';document.getElementById('override-btn').style.display='none';}
+function calc(){
+  const okw=parseFloat(document.getElementById('f-okw').value)||0,nkw=parseFloat(document.getElementById('f-nkw').value)||0,kwp=parseFloat(document.getElementById('f-kwp').value)||0,sub=parseFloat(document.getElementById('f-sub').value)||0;
+  const cons=Math.max(0,nkw-okw);document.getElementById('f-cons').value=cons;
+  const kwt=cons*kwp,tlbp=kwt+sub,tusd=tlbp/S.rate;
+  document.getElementById('s-kw').textContent=kwp>0?fmt(kwt)+' LBP':'—';document.getElementById('s-lbp').textContent=tlbp>0?fmt(tlbp)+' LBP':'—';document.getElementById('s-usd').textContent=tlbp>0?fmtU(tusd):'—';document.getElementById('s-rn').textContent=fmt(S.rate)+' LBP/USD';
+}
+function generateReceipt(){
+  const sel=document.getElementById('cust-sel');if(!sel.value){alert('Please select a customer.');return;}
+  const c=S.customers[sel.value];
+  const sub=parseFloat(document.getElementById('f-sub').value)||0,amp=document.getElementById('f-amp').value;
+  const okw=parseFloat(document.getElementById('f-okw').value)||0,nkw=parseFloat(document.getElementById('f-nkw').value)||0,kwp=parseFloat(document.getElementById('f-kwp').value)||0;
+  const cons=Math.max(0,nkw-okw),kwt=cons*kwp,tlbp=kwt+sub,tusd=tlbp/S.rate;
+  const prevUnpaid=parseFloat(c.remaining)||0,grandTotal=parseFloat((tusd+prevUnpaid).toFixed(2));
+  S.lastReceipt={custIdx:parseInt(sel.value),rowIndex:c.rowIndex,custName:c.name,phone:ph(c.phone),sub,amp,okw,nkw,kwp,prevUnpaid,cons,kwt,tlbp,tusd,grandTotal,date:nowDate(),status:'Unpaid'};
+  // Digital
+  document.getElementById('r-date').textContent=S.lastReceipt.date;document.getElementById('r-name').textContent=c.name;document.getElementById('r-amp').textContent=amp?amp+' Amperes':'';
+  document.getElementById('r-sub').textContent=fmt(sub)+' LBP';document.getElementById('r-sub2').textContent=fmt(sub)+' LBP';
+  document.getElementById('r-okw').textContent=fmt(okw)+' KW';document.getElementById('r-nkw').textContent=fmt(nkw)+' KW';document.getElementById('r-cons').textContent=fmt(cons)+' KW';
+  document.getElementById('r-kwp').textContent=fmt(kwp)+' LBP/KW';document.getElementById('r-kwt').textContent=fmt(kwt)+' LBP';
+  document.getElementById('r-tlbp').textContent=fmt(tlbp)+' LBP';document.getElementById('r-tusd').textContent=fmtU(tusd);document.getElementById('r-rl').textContent='Total due (USD) — Rate: '+fmt(S.rate);
+  const arrEl=document.getElementById('r-arr');
+  if(prevUnpaid>0){arrEl.style.display='block';document.getElementById('r-prev').textContent=fmtU(prevUnpaid);document.getElementById('r-grand').textContent=fmtU(grandTotal);}else arrEl.style.display='none';
+  document.getElementById('paid-stamp').style.display='none';
+  // Thermal
+  document.getElementById('th-date').textContent=S.lastReceipt.date;document.getElementById('th-name').textContent=c.name;document.getElementById('th-amp').textContent=amp?amp+'A':'—';
+  document.getElementById('th-okw').textContent=fmt(okw)+' KW';document.getElementById('th-nkw').textContent=fmt(nkw)+' KW';document.getElementById('th-cons').textContent=fmt(cons)+' KW';
+  document.getElementById('th-kwp').textContent=fmt(kwp)+' LBP';document.getElementById('th-kwt').textContent=fmt(kwt)+' LBP';document.getElementById('th-sub').textContent=fmt(sub)+' LBP';
+  document.getElementById('th-total').textContent='TOTAL: '+fmt(tlbp)+' LBP';document.getElementById('th-usd').textContent=fmtU(tusd);document.getElementById('th-rate').textContent=fmt(S.rate);
+  const thArr=document.getElementById('th-arr-block');
+  if(prevUnpaid>0){thArr.style.display='block';document.getElementById('th-prev').textContent=fmtU(prevUnpaid);document.getElementById('th-grand').textContent=fmtU(grandTotal);}else thArr.style.display='none';
+  document.getElementById('th-paid-line').style.display='none';
+  document.getElementById('save-btn').style.display=S.currentUser?.role==='admin'?'':'none';
+  document.getElementById('wa-btn').style.display=ph(c.phone)?'flex':'none';
+  document.getElementById('save-al').innerHTML='';
+  document.getElementById('receipt-out').style.display='block';
+  document.getElementById('receipt-out').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function saveBilling(){
+  if(!S.lastReceipt)return;
+  const r=S.lastReceipt,btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Saving...';
+  try{
+    const res=await apiPost({action:'updateAfterBilling',rowIndex:r.rowIndex,kwThis:r.nkw,remaining:parseFloat(r.tusd.toFixed(2)),date:r.date,custName:r.custName,amperes:r.amp,kwLast:r.okw,consumption:r.cons,kwPrice:r.kwp,sub:r.sub,kwCharges:r.kwt,totalLBP:r.tlbp,totalUSD:parseFloat(r.tusd.toFixed(2)),prevBalance:r.prevUnpaid,grandTotal:r.grandTotal,rate:S.rate});
+    if(!res.ok)throw new Error(res.error||'Save failed');
+    S.customers[r.custIdx].kwLast=r.nkw;S.customers[r.custIdx].kwThis=r.nkw;S.customers[r.custIdx].remaining=parseFloat(r.tusd.toFixed(2));S.customers[r.custIdx].billedThisMonth=true;S.customers[r.custIdx].billStatus='Unpaid';
+    populateDropdown();renderCustList();
+    setAl('save-al','ok','Receipt saved. Has the customer paid?');
+    if(S.currentUser?.role==='admin')setTimeout(()=>openPaymentModal(),700);
+  }catch(e){setAl('save-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-table-export"></i> Save & update sheet';
+}
+function openPaymentModal(){
+  if(!S.lastReceipt)return;
+  document.getElementById('pay-cust-name-modal').textContent=S.lastReceipt.custName;
+  document.getElementById('pay-amount-due').textContent=fmtU(S.lastReceipt.grandTotal);
+  document.getElementById('pay-date-disp').textContent=nowDate();
+  document.getElementById('pay-al').innerHTML='';
+  document.getElementById('payment-modal').classList.add('open');
+}
+function closePaymentModal(){document.getElementById('payment-modal').classList.remove('open');}
+async function confirmPayment(){
+  if(!S.lastReceipt)return;
+  const r=S.lastReceipt,btn=document.getElementById('confirm-pay-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Recording...';
+  try{
+    const res=await apiPost({action:'recordPayment',custName:r.custName,paidDate:nowDate(),amountPaid:r.grandTotal});
+    if(!res.ok)throw new Error(res.error||'Failed');
+    S.customers[r.custIdx].remaining=0;S.customers[r.custIdx].billStatus='Paid';S.customers[r.custIdx].billTotal=r.grandTotal;S.lastReceipt.status='Paid';
+    populateDropdown();renderCustList();closePaymentModal();
+    const pdate=nowDate();
+    document.getElementById('paid-stamp').style.display='block';document.getElementById('paid-stamp-date').textContent=pdate;
+    document.getElementById('th-paid-line').style.display='block';document.getElementById('th-paid-date').textContent='Paid: '+pdate;
+    document.getElementById('cust-status-bar').className='cust-status-bar paid';
+    document.getElementById('cust-status-text').innerHTML=`✅ &nbsp;<strong>${r.custName}</strong> has paid this month (${fmtU(r.grandTotal)})`;
+    document.getElementById('overdue-warn').style.display='none';
+    setAl('save-al','ok','✅ Payment recorded! Send the WhatsApp confirmation now.');
+    if(ph(r.phone)){S.waContext='payment';setTimeout(()=>openWALangModal('payment'),1000);}
+  }catch(e){setAl('pay-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-circle-check"></i> Yes — payment received';
+}
+
+// ── WHATSAPP ──
+function openWALangModal(ctx){
+  S.waContext=ctx||'bill';
+  document.getElementById('wa-modal-title').textContent=ctx==='payment'?'Send payment confirmation':'Send WhatsApp message';
+  document.getElementById('wa-modal-sub').textContent=ctx==='payment'?'Send receipt confirmation to customer:':'Choose the language for the message:';
+  document.getElementById('wa-lang-modal').classList.add('open');
+}
+function buildWAMsg(r,lang,isPaid){
+  const totalAmt=r.prevUnpaid>0?fmtU(r.grandTotal):fmtU(r.tusd);
+  if(lang==='en'){
+    return isPaid
+      ?`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ Kahrabji\nElectricity Receipt\n━━━━━━━━━━━━━━━━━━━━━━━\n\n✅ PAYMENT CONFIRMED\n\nDear ${r.custName},\nThank you for your payment!\n\n📋 Date: ${r.date} | ${r.amp}A\n📊 Consumed: ${fmt(r.cons)} KW @ ${fmt(r.kwp)} LBP/KW\n💰 KW charges: ${fmt(r.kwt)} LBP\n💰 Subscription: ${fmt(r.sub)} LBP\n💵 Total (LBP): ${fmt(r.tlbp)} LBP\n💵 Total (USD): ${fmtU(r.tusd)}`+(r.prevUnpaid>0?`\n⚠️ Prev. balance: ${fmtU(r.prevUnpaid)}`:'')+'`\n\n💵 AMOUNT PAID: '+totalAmt+'\n🏠 Your account is now CLEAR!\nSee you next month! 🙏'
+      :`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ Kahrabji\nElectricity Receipt\n━━━━━━━━━━━━━━━━━━━━━━━\n\nDear ${r.custName},\n\n📋 Date: ${r.date} | ${r.amp}A\n📊 Consumed: ${fmt(r.cons)} KW\n💰 Total (LBP): ${fmt(r.tlbp)} LBP\n💵 Total (USD): ${fmtU(r.tusd)}`+(r.prevUnpaid>0?`\n⚠️ Prev. balance: ${fmtU(r.prevUnpaid)}\n💵 Grand total: ${totalAmt}`:'')+'\n\n⚠️ Please pay before the 8th.\nThank you! 🙏';
+  } else if(lang==='ar'){
+    return isPaid
+      ?`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ فاتورة المولد\n━━━━━━━━━━━━━━━━━━━━━━━\n\n✅ تم تأكيد الدفع\n\nعزيزي ${r.custName}،\nشكراً جزيلاً على دفعكم!\n\n📋 التاريخ: ${r.date}\n📊 الاستهلاك: ${fmt(r.cons)} KW\n💰 الاشتراك: ${fmt(r.sub)} ل.ل.\n💵 المجموع: ${fmt(r.tlbp)} ل.ل. (${fmtU(r.tusd)})`+(r.prevUnpaid>0?`\n⚠️ الرصيد السابق: ${fmtU(r.prevUnpaid)}`:'')+'\n\n💵 المبلغ المدفوع: '+totalAmt+'\n🏠 حسابكم أصبح صفراً!\nإلى اللقاء الشهر القادم! 🙏'
+      :`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ فاتورة المولد\n━━━━━━━━━━━━━━━━━━━━━━━\n\nعزيزي ${r.custName}،\n📋 التاريخ: ${r.date}\n📊 الاستهلاك: ${fmt(r.cons)} KW\n💵 المجموع: ${fmt(r.tlbp)} ل.ل. (${fmtU(r.tusd)})`+(r.prevUnpaid>0?`\n⚠️ الرصيد السابق: ${fmtU(r.prevUnpaid)}\n💵 الإجمالي: ${totalAmt}`:'')+'\n\n⚠️ يرجى الدفع قبل الثامن.\nشكراً! 🙏';
+  } else {
+    return isPaid
+      ?`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ FACTURATION GÉNÉRATEUR\n━━━━━━━━━━━━━━━━━━━━━━━\n\n✅ PAIEMENT CONFIRMÉ\n\nCher(e) ${r.custName},\nMerci pour votre paiement!\n\n📋 Date: ${r.date}\n📊 Consommé: ${fmt(r.cons)} KW\n💰 Abonnement: ${fmt(r.sub)} LBP\n💵 Total: ${fmt(r.tlbp)} LBP (${fmtU(r.tusd)})`+(r.prevUnpaid>0?`\n⚠️ Solde précédent: ${fmtU(r.prevUnpaid)}`:'')+'\n\n💵 MONTANT PAYÉ: '+totalAmt+'\n🏠 Votre compte est à ZÉRO!\nÀ le mois prochain! 🙏'
+      :`━━━━━━━━━━━━━━━━━━━━━━━\n⚡ FACTURATION GÉNÉRATEUR\n━━━━━━━━━━━━━━━━━━━━━━━\n\nCher(e) ${r.custName},\n📋 Date: ${r.date}\n📊 Consommé: ${fmt(r.cons)} KW\n💵 Total: ${fmt(r.tlbp)} LBP (${fmtU(r.tusd)})`+(r.prevUnpaid>0?`\n⚠️ Solde précédent: ${fmtU(r.prevUnpaid)}\n💵 Total général: ${totalAmt}`:'')+'\n\n⚠️ Veuillez payer avant le 8.\nMerci! 🙏';
+  }
+}
+function sendWA(lang){
+  document.getElementById('wa-lang-modal').classList.remove('open');
+  if(!S.lastReceipt)return;
+  const r=S.lastReceipt,p=ph(r.phone).replace(/\D/g,'');
+  if(!p){alert('No phone number for this customer.');return;}
+  const isPaid=S.waContext==='payment'||r.status==='Paid';
+  window.open('https://wa.me/'+p+'?text='+encodeURIComponent(buildWAMsg(r,lang,isPaid)),'_blank');
+}
+function sendWAReminder(p,name,remaining){
+  const num=ph(p).replace(/\D/g,'');
+  const month=new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const msg=`⚡ Kahrabji\n\nDear ${name},\n\nReminder: your electricity bill for ${month} is due.`+(parseFloat(remaining)>0?`\n💰 Outstanding: $${parseFloat(remaining).toFixed(2)}`:'')+'`\n\n⚠️ Please pay before the 8th.\nThank you! 🙏';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+}
+function closeReceipt(){document.getElementById('receipt-out').style.display='none';}
+
+// ── BULK WHATSAPP ──
+function buildBulkList(custs){
+  S.bulkUnpaid=custs.filter(c=>(parseFloat(c.remaining)||0)>0&&ph(c.phone));
+  const card=document.getElementById('bulk-wa-card');
+  if(!S.bulkUnpaid.length){card.style.display='none';return;}
+  card.style.display='block';
+  document.getElementById('bulk-count').textContent=S.bulkUnpaid.length+' pending';
+  renderBulkList();
+}
+function renderBulkList(){
+  document.getElementById('bulk-list').innerHTML=S.bulkUnpaid.map((c,i)=>`
+    <div class="bulk-item" id="bulk-item-${i}">
+      <div class="bulk-item-info">
+        <div class="bulk-item-name">${c.name}</div>
+        <div class="bulk-item-amt">Owes ${fmtU(c.remaining)} • ${ph(c.phone)}</div>
+      </div>
+      <button class="btn-p wa sm" onclick="sendBulkSingle(${i})" style="margin-bottom:0;padding:8px 12px"><i class="ti ti-brand-whatsapp"></i></button>
+    </div>`).join('');
+}
+function startBulkWA(){
+  if(!S.bulkUnpaid.length){alert('No unpaid customers with phone numbers.');return;}
+  S.bulkIdx=0;sendNextBulk();}
+function sendNextBulk(){
+  if(S.bulkIdx>=S.bulkUnpaid.length){setAl('bulk-al','ok','All reminders sent!');return;}
+  sendBulkSingle(S.bulkIdx);S.bulkIdx++;
+  if(S.bulkIdx<S.bulkUnpaid.length)setTimeout(sendNextBulk,1500);
+}
+function sendBulkSingle(i){
+  const c=S.bulkUnpaid[i],lang=document.getElementById('bulk-lang').value;
+  const p=ph(c.phone).replace(/\D/g,'');
+  const month=new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  let msg='';
+  if(lang==='ar') msg=`⚡ فاتورة المولد\n\nعزيزي ${c.name}،\nتذكير: فاتورة الكهرباء لشهر ${month} مستحقة.\n💰 الرصيد المتبقي: $${parseFloat(c.remaining).toFixed(2)}\n⚠️ يرجى الدفع قبل الثامن.\nشكراً! 🙏`;
+  else if(lang==='fr') msg=`⚡ FACTURATION GÉNÉRATEUR\n\nCher(e) ${c.name},\nRappel: votre facture de ${month} est due.\n💰 Solde impayé: $${parseFloat(c.remaining).toFixed(2)}\n⚠️ Veuillez payer avant le 8.\nMerci! 🙏`;
+  else msg=`⚡ Kahrabji\n\nDear ${c.name},\nReminder: your electricity bill for ${month} is due.\n💰 Outstanding: $${parseFloat(c.remaining).toFixed(2)}\n⚠️ Please pay before the 8th.\nThank you! 🙏`;
+  window.open('https://wa.me/'+p+'?text='+encodeURIComponent(msg),'_blank');
+  const item=document.getElementById('bulk-item-'+i);
+  if(item)item.classList.add('sent');
+}
+function copyAllMessages(){
+  if(!S.bulkUnpaid.length){alert('No unpaid customers with phone numbers.');return;}
+  const lang=document.getElementById('bulk-lang').value;
+  const month=new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const all=S.bulkUnpaid.map(c=>{
+    let msg='';
+    if(lang==='ar') msg=`[${ph(c.phone)}]\nعزيزي ${c.name}، تذكير: فاتورة ${month} مستحقة. الرصيد: $${parseFloat(c.remaining).toFixed(2)}. يرجى الدفع قبل الثامن. شكراً!`;
+    else if(lang==='fr') msg=`[${ph(c.phone)}]\nCher(e) ${c.name}, rappel: facture de ${month} due. Solde: $${parseFloat(c.remaining).toFixed(2)}. Payez avant le 8. Merci!`;
+    else msg=`[${ph(c.phone)}]\nDear ${c.name}, reminder: bill for ${month} is due. Outstanding: $${parseFloat(c.remaining).toFixed(2)}. Pay before the 8th. Thank you!`;
+    return msg;
+  }).join('\n\n─────────────\n\n');
+  navigator.clipboard.writeText(all).then(()=>setAl('bulk-al','ok','All '+S.bulkUnpaid.length+' messages copied to clipboard!')).catch(()=>alert(all));
+}
+
+// ── DASHBOARD ──
+async function loadDashboard(){
+  setAl('dash-al','info','Loading dashboard...');
+  try{
+    const [cd,hd]=await Promise.all([apiPost({action:'getCustomersWithStatus'}),apiGet('getHistory')]);
+    if(!cd.ok)throw new Error(cd.error);
+    const custs=cd.customers||[],hist=hd.history||[];
+    document.getElementById('d-tusd').textContent=fmtU(hist.reduce((a,h)=>a+(parseFloat(h.totalUSD)||0),0));
+    document.getElementById('d-collected').textContent=fmtU(hist.filter(h=>h.status==='Paid').reduce((a,h)=>a+(parseFloat(h.grandTotal)||0),0));
+    document.getElementById('d-count').textContent=hist.length;
+    document.getElementById('d-out').textContent=fmtU(custs.reduce((a,c)=>a+(parseFloat(c.remaining)||0),0));
+    buildBulkList(custs);
+    const overdue=custs.filter(c=>(parseFloat(c.remaining)||0)>0);
+    const odSec=document.getElementById('overdue-section');
+    if(overdue.length){
+      odSec.style.display='block';
+      document.getElementById('overdue-list').innerHTML=overdue.map(c=>`
+        <div class="overdue-item">
+          <div><div class="overdue-name">${c.name}</div><div class="overdue-meta">${c.amperes}A${ph(c.phone)?' • '+ph(c.phone):''}</div></div>
+          <div style="display:flex;align-items:center;gap:8px"><span class="overdue-amt">${fmtU(c.remaining)}</span>${ph(c.phone)?`<button class="btn-ic green" onclick="sendWAReminder('${ph(c.phone).replace(/'/g,"\\'")}','${c.name.replace(/'/g,"\\'")}',${parseFloat(c.remaining)||0})"><i class="ti ti-brand-whatsapp" style="font-size:22px;color:#25D366"></i></button>`:''}</div>
+        </div>`).join('');
+    } else odSec.style.display='none';
+    document.getElementById('dash-list').innerHTML=custs.map(c=>{
+      const cons=Math.max(0,(parseFloat(c.kwThis)||0)-(parseFloat(c.kwLast)||0));
+      const estUSD=((cons*(parseFloat(c.kwPrice)||0))+(parseFloat(c.sub)||0))/S.rate;
+      const rem=parseFloat(c.remaining)||0;
+      const st=c.billStatus==='Paid'?'<span class="tag-g">✅ Paid</span>':c.billStatus==='Unpaid'?'<span class="tag-r">🔴 Unpaid</span>':'<span class="tag-b">⚪ Not billed</span>';
+      return`<div class="cust-item"><div class="cust-item-hdr"><span class="cust-item-name">${c.name}</span><div style="display:flex;gap:6px;align-items:center">${st}${ph(c.phone)?`<button class="btn-ic green" onclick="sendWAReminder('${ph(c.phone).replace(/'/g,"\\'")}','${c.name.replace(/'/g,"\\'")}',${rem})"><i class="ti ti-brand-whatsapp" style="font-size:20px;color:#25D366"></i></button>`:''}</div></div><div class="cust-meta"><span class="meta-tag">${c.amperes}A</span><span class="meta-tag">Est: ${fmtU(estUSD)}</span>${rem>0?`<span class="tag-r">Owes ${fmtU(rem)}</span>`:''}</div></div>`;
+    }).join('');
+    document.getElementById('dash-al').innerHTML='';
+  }catch(e){setAl('dash-al','err',e.message);}
+}
+
+// ── REPORTS ──
+async function initReportMonths(){
+  try{
+    const d=await apiGet('getHistory');
+    if(!d.ok)return;
+    const months=[...new Set((d.history||[]).map(h=>h.date?String(h.date).substring(0,7):null).filter(Boolean))].sort().reverse();
+    const sel=document.getElementById('report-month-sel');
+    months.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
+  }catch(e){}
+}
+async function loadReport(){
+  const month=document.getElementById('report-month-sel').value;
+  if(!month){document.getElementById('report-content').style.display='none';return;}
+  setAl('report-al','info','<span class="spin dk"></span> Loading report...');
+  try{
+    const d=await apiPost({action:'getMonthlyReport',month});
+    if(!d.ok)throw new Error(d.error);
+    if(d.empty){setAl('report-al','warn','No data found for this month.');document.getElementById('report-content').style.display='none';return;}
+    document.getElementById('report-al').innerHTML='';
+    const r=d.report;S.reportData=r;
+    document.getElementById('rp-billed').textContent=fmtU(r.totalBilled);
+    document.getElementById('rp-collected').textContent=fmtU(r.totalCollected);
+    document.getElementById('rp-pending').textContent=fmtU(r.totalPending);
+    document.getElementById('rp-total').textContent=r.totalCustomers;
+    document.getElementById('rp-paid-count').textContent=r.paidCount+' paid, '+r.unpaidCount+' unpaid';
+    const pct=r.totalBilled>0?Math.round((r.totalCollected/r.totalBilled)*100):0;
+    document.getElementById('rp-rate-pct').textContent=pct+'%';
+    document.getElementById('rp-bar').style.width=pct+'%';
+    document.getElementById('rp-paid-lbl').textContent='✅ Collected: '+fmtU(r.totalCollected);
+    document.getElementById('rp-unpaid-lbl').textContent='🔴 Pending: '+fmtU(r.totalPending);
+    document.getElementById('report-cust-list').innerHTML=r.customers.map(c=>`
+      <div class="cust-item">
+        <div class="cust-item-hdr">
+          <div style="display:flex;align-items:center;gap:8px"><span class="dot ${c.status==='Paid'?'paid':'unpaid'}"></span><span class="cust-item-name">${c.name}</span></div>
+          <div style="display:flex;align-items:center;gap:8px">${c.status==='Paid'?'<span class="tag-g">✅ Paid</span>':'<span class="tag-r">🔴 Unpaid</span>'}<span style="font-weight:700;font-size:14px;color:var(--text)">${fmtU(c.grandTotal)}</span></div>
+        </div>
+        <div class="cust-meta"><span class="meta-tag">Consumption: ${fmt(c.consumption)} KW</span><span class="meta-tag">Total LBP: ${fmt(c.totalLBP)}</span>${c.paidDate?`<span class="tag-g" style="font-size:10px">Paid: ${fmtDate(c.paidDate)}</span>`:''}</div>
+      </div>`).join('');
+    document.getElementById('report-content').style.display='block';
+  }catch(e){setAl('report-al','err',e.message);}
+}
+function printReport(){
+  if(!S.reportData)return;
+  const r=S.reportData;
+  const pct=r.totalBilled>0?Math.round((r.totalCollected/r.totalBilled)*100):0;
+  document.getElementById('print-report-content').innerHTML=`
+    <h2 style="text-align:center;margin-bottom:4px">⚡ Kahrabji — Monthly Report</h2>
+    <p style="text-align:center;color:#666;margin-bottom:20px">Month: ${r.month}</p>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:16px">
+      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">Total billed</td><td style="padding:8px;border:1px solid #ddd">${fmtU(r.totalBilled)}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">Collected</td><td style="padding:8px;border:1px solid #ddd;color:green">${fmtU(r.totalCollected)}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">Pending</td><td style="padding:8px;border:1px solid #ddd;color:red">${fmtU(r.totalPending)}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">Collection rate</td><td style="padding:8px;border:1px solid #ddd">${pct}%</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">Customers billed</td><td style="padding:8px;border:1px solid #ddd">${r.totalCustomers} (${r.paidCount} paid, ${r.unpaidCount} unpaid)</td></tr>
+    </table>
+    <h3 style="margin-bottom:10px">Per customer breakdown</h3>
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:#f0f0f0"><th style="padding:8px;border:1px solid #ddd;text-align:left">Customer</th><th style="padding:8px;border:1px solid #ddd">Consumption</th><th style="padding:8px;border:1px solid #ddd">Total (USD)</th><th style="padding:8px;border:1px solid #ddd">Status</th></tr></thead>
+      <tbody>${r.customers.map(c=>`<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">${c.name}</td><td style="padding:8px;border:1px solid #ddd;text-align:center">${fmt(c.consumption)} KW</td><td style="padding:8px;border:1px solid #ddd;text-align:center">${fmtU(c.grandTotal)}</td><td style="padding:8px;border:1px solid #ddd;text-align:center;color:${c.status==='Paid'?'green':'red'}">${c.status==='Paid'?'✅ Paid':'🔴 Unpaid'}</td></tr>`).join('')}</tbody>
+    </table>
+    <p style="text-align:center;color:#999;margin-top:16px;font-size:12px">Generated on ${nowDate()}</p>`;
+  window.print();
+}
+
+// ── HISTORY ──
+async function loadHistory(){
+  setAl('hist-al','info','Loading history...');
+  try{
+    const d=await apiGet('getHistory');if(!d.ok)throw new Error(d.error);
+    S.history=d.history||[];populateMonthFilter();filterHistory();document.getElementById('hist-al').innerHTML='';
+  }catch(e){setAl('hist-al','err',e.message);}
+}
+function populateMonthFilter(){
+  const sel=document.getElementById('hist-month'),cur=sel.value;
+  const months=[...new Set(S.history.map(h=>h.date?String(h.date).substring(0,7):null).filter(Boolean))].sort().reverse();
+  sel.innerHTML='<option value="">All months</option>';
+  months.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
+  if(cur)sel.value=cur;
+}
+function filterHistory(){
+  const search=document.getElementById('hist-search').value.toLowerCase(),month=document.getElementById('hist-month').value,status=document.getElementById('hist-status').value;
+  const rows=S.history.filter(h=>(!search||h.custName?.toLowerCase().includes(search))&&(!month||String(h.date||'').includes(month))&&(!status||h.status===status));
+  const list=document.getElementById('hist-list'),empty=document.getElementById('hist-empty');
+  if(!rows.length){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  list.innerHTML=[...rows].reverse().map(h=>`
+    <div class="hist-item">
+      <div class="hist-hdr"><span class="hist-name">${h.custName||''}</span><span class="hist-date">${fmtDate(h.date)}</span></div>
+      <div class="hist-details">
+        <span class="meta-tag">${fmt(h.consumption||0)} KW</span><span class="tag-b">${fmtU(h.totalUSD)}</span>
+        <span style="font-weight:600;font-size:12px;color:var(--text)">Total: ${fmtU(h.grandTotal)}</span>
+        ${h.status==='Paid'?`<span class="tag-g">✅ Paid ${fmtDate(h.paidDate)}</span>`:`<span class="tag-r">🔴 Unpaid</span>`}
+        ${h.status!=='Paid'&&S.currentUser?.role==='admin'?`<button class="btn-p amber" style="font-size:11px;padding:5px 10px;margin:0;width:auto" onclick="quickMarkPaid('${(h.custName||'').replace(/'/g,"\\'")}',${h.grandTotal||0})"><i class="ti ti-cash"></i> Mark paid</button>`:''}
+      </div>
+    </div>`).join('');
+}
+async function quickMarkPaid(custName,amount){
+  if(!confirm(`Mark "${custName}" as paid?`))return;
+  try{
+    const res=await apiPost({action:'recordPayment',custName,paidDate:nowDate(),amountPaid:amount});
+    if(!res.ok)throw new Error(res.error);
+    setAl('hist-al','ok','Payment recorded for '+custName+'.');await loadHistory();clearAl('hist-al');await loadCustomers();
+  }catch(e){setAl('hist-al','err',e.message);}
+}
+
+// ── SETTINGS / CUSTOMERS ──
+function renderCustList(){
+  const list=document.getElementById('cust-list');if(!list)return;
+  if(!S.customers.length){list.innerHTML='<div class="empty-state"><i class="ti ti-users"></i><p>No customers yet.</p></div>';return;}
+  list.innerHTML=S.customers.map((c,i)=>`
+    <div class="cust-item">
+      <div class="cust-item-hdr">
+        <div style="display:flex;align-items:center;gap:8px"><span class="dot ${c.billStatus==='Paid'?'paid':c.billStatus==='Unpaid'?'unpaid':'none'}"></span><span class="cust-item-name">${c.name}</span></div>
+        <div style="display:flex;gap:2px">
+          <button class="btn-ic" onclick="openEditCust(${i})"><i class="ti ti-edit" style="font-size:18px"></i></button>
+          <button class="btn-ic red" onclick="deleteCust(${c.rowIndex},'${c.name.replace(/'/g,"\\'")}',${i})"><i class="ti ti-trash" style="font-size:18px"></i></button>
+          ${ph(c.phone)?`<button class="btn-ic green" onclick="sendWAReminder('${ph(c.phone).replace(/'/g,"\\'")}','${c.name.replace(/'/g,"\\'")}',${parseFloat(c.remaining)||0})"><i class="ti ti-brand-whatsapp" style="font-size:18px"></i></button>`:''}
+        </div>
+      </div>
+      <div class="cust-meta">
+        <span class="meta-tag">${c.amperes}A</span><span class="meta-tag">Sub: ${fmt(c.sub)} LBP</span>
+        ${c.billStatus==='Paid'?`<span class="tag-g">✅ Paid ${fmtU(c.billTotal)}</span>`:c.billStatus==='Unpaid'?`<span class="tag-r">🔴 Unpaid</span>`:'<span class="tag-b">⚪ Not billed</span>'}
+        ${ph(c.phone)?`<span class="meta-tag" style="color:#25D366"><i class="ti ti-brand-whatsapp"></i> ${ph(c.phone)}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+function toggleAddCust(){const f=document.getElementById('add-cust-form');f.classList.toggle('open');document.getElementById('edit-cust-form').classList.remove('open');if(f.classList.contains('open'))document.getElementById('cn-name').focus();}
+function openEditCust(idx){
+  const c=S.customers[idx];
+  document.getElementById('edit-cust-form').classList.add('open');document.getElementById('add-cust-form').classList.remove('open');
+  ['ed-row','ed-idx','ed-name','ed-amp','ed-sub','ed-kwp','ed-okw','ed-nkw','ed-prev','ed-phone'].forEach((id,i)=>{document.getElementById(id).value=[c.rowIndex,idx,c.name,c.amperes,c.sub,c.kwPrice,c.kwLast,c.kwThis,c.remaining,ph(c.phone)][i];});
+  document.getElementById('edit-cust-form').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function saveNewCust(){
+  const name=document.getElementById('cn-name').value.trim();if(!name){alert('Name is required.');return;}
+  const btn=document.getElementById('add-cust-btn');btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Saving...';
+  try{
+    const res=await apiPost({action:'addCustomer',name,amperes:document.getElementById('cn-amp').value||0,sub:document.getElementById('cn-sub').value||0,kwPrice:document.getElementById('cn-kwp').value||0,kwLast:document.getElementById('cn-okw').value||0,kwThis:document.getElementById('cn-nkw').value||0,remaining:document.getElementById('cn-prev').value||0,phone:document.getElementById('cn-phone').value||''});
+    if(!res.ok)throw new Error(res.error||'Save failed');
+    setAl('cust-al','ok',`"${name}" added.`);document.getElementById('add-cust-form').classList.remove('open');
+    ['cn-name','cn-amp','cn-sub','cn-kwp','cn-phone'].forEach(id=>document.getElementById(id).value='');['cn-okw','cn-nkw','cn-prev'].forEach(id=>document.getElementById(id).value='0');
+    await loadCustomers();clearAl('cust-al');
+  }catch(e){setAl('cust-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Save to sheet';
+}
+async function saveEditCust(){
+  const btn=document.getElementById('edit-cust-btn');btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Saving...';
+  try{
+    const res=await apiPost({action:'updateCustomer',rowIndex:parseInt(document.getElementById('ed-row').value),name:document.getElementById('ed-name').value,amperes:document.getElementById('ed-amp').value,sub:document.getElementById('ed-sub').value,kwPrice:document.getElementById('ed-kwp').value,kwLast:document.getElementById('ed-okw').value,kwThis:document.getElementById('ed-nkw').value,remaining:document.getElementById('ed-prev').value,phone:document.getElementById('ed-phone').value});
+    if(!res.ok)throw new Error(res.error||'Save failed');
+    setAl('edit-al','ok','Customer updated.');setTimeout(()=>{document.getElementById('edit-cust-form').classList.remove('open');document.getElementById('edit-al').innerHTML='';},1500);await loadCustomers();
+  }catch(e){setAl('edit-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Save changes';
+}
+async function deleteCust(rowIndex,name){
+  if(!confirm(`Delete "${name}"?`))return;
+  try{const res=await apiPost({action:'deleteCustomer',rowIndex});if(!res.ok)throw new Error(res.error);setAl('cust-al','ok',`"${name}" removed.`);await loadCustomers();clearAl('cust-al');}
+  catch(e){setAl('cust-al','err','Delete failed: '+e.message);}
+}
+function updateRate(){
+  const v=parseFloat(document.getElementById('new-rate').value);if(!v||v<1000){setAl('rate-al','err','Enter a valid rate (min 1,000).');return;}
+  S.rate=v;document.getElementById('rate-disp').textContent=fmt(v)+' LBP';document.getElementById('new-rate').value='';setAl('rate-al','ok','Rate updated to '+fmt(v)+' LBP/USD.');clearAl('rate-al');
+}
+function addUser(){
+  const u=document.getElementById('nu').value.trim(),p=document.getElementById('np').value,r=document.getElementById('nr').value;
+  if(!u||!p){setAl('user-al','err','Username and password required.');return;}
+  if(S.users.find(x=>x.username===u)){setAl('user-al','err','Username already exists.');return;}
+  S.users.push({username:u,password:p,role:r});document.getElementById('nu').value='';document.getElementById('np').value='';
+  setAl('user-al','ok',`User "${u}" added.`);renderUsers();clearAl('user-al');
+}
+function removeUser(u){if(!confirm(`Remove "${u}"?`))return;S.users=S.users.filter(x=>x.username!==u);renderUsers();}
+function renderUsers(){
+  document.getElementById('users-list').innerHTML=S.users.map(u=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div><span style="font-weight:600;font-size:14px;color:var(--text)">${u.username}</span><span class="pill ${u.role}" style="margin-left:8px">${u.role==='admin'?'Admin':'Viewer'}</span></div>
+      ${u.username!==S.currentUser?.username?`<button class="btn-ic red" onclick="removeUser('${u.username}')"><i class="ti ti-trash" style="font-size:18px"></i></button>`:'<span style="font-size:11px;color:var(--text3)">you</span>'}
+    </div>`).join('');
+}
+
+// ── NAVIGATION ──
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.btab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');document.querySelector('[data-page="'+p+'"]').classList.add('active');
+  if(p==='settings'){const isAdmin=S.currentUser?.role==='admin';document.getElementById('s-admin').style.display=isAdmin?'':'none';document.getElementById('s-viewer').style.display=isAdmin?'none':'';if(isAdmin){renderUsers();renderCustList();initPortalLink();}}
+  if(p==='dashboard')loadDashboard();
+  if(p==='history')loadHistory();
+  if(p==='reports')initReportMonths();
+}
+function doLogin(){
+  const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value;
+  const user=S.users.find(x=>x.username===u&&x.password===p);
+  if(!user){setAl('login-al','err','Invalid username or password.');return;}
+  document.getElementById('login-al').innerHTML='';S.currentUser=user;
+  document.getElementById('login-screen').style.display='none';document.getElementById('main-app').style.display='block';document.getElementById('bottom-nav').style.display='flex';
+  const b=document.getElementById('nav-badge');b.textContent=user.role==='admin'?'Admin':'Viewer';b.className='pill '+user.role;
+  document.getElementById('viewer-warn').style.display=user.role==='viewer'?'flex':'none';
+  loadCustomers();
+}
+function doLogout(){S.currentUser=null;document.getElementById('login-screen').style.display='block';document.getElementById('main-app').style.display='none';document.getElementById('bottom-nav').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
+function clearFormFields(){['f-amp','f-sub','f-okw','f-nkw','f-cons','f-kwp'].forEach(id=>document.getElementById(id).value='');['s-kw','s-lbp','s-usd'].forEach(id=>document.getElementById(id).textContent='—');}
+function clearForm(){document.getElementById('cust-sel').value='';document.getElementById('cust-status-bar').className='cust-status-bar';document.getElementById('bill-fields').style.display='none';document.getElementById('form-btn-row').style.display='none';document.getElementById('bill-blocked-warn').style.display='none';document.getElementById('overdue-warn').style.display='none';clearFormFields();document.getElementById('receipt-out').style.display='none';}
+
+// ══════════════════════════════════════════════
+// ── REMOTE LICENSE SYSTEM ──
+// ══════════════════════════════════════════════
+const LICENSE_API   = 'https://script.google.com/macros/s/AKfycbz9ldqLiOwdFHc7PLhm3NjtAQIzNP4nB9DZMtepx25ARcr8b2e0tKBUPq1V1ae697yZ/exec';
+const LIC_KEY_STORE    = 'kahrabji_license_key';
+const LIC_CACHE_STORE  = 'kahrabji_license_cache';
+const LIC_CACHE_TIME   = 'kahrabji_license_cache_time';
+const CACHE_DURATION   = 24 * 60 * 60 * 1000; // 24h offline grace
+
+function showScreen(id){
+  ['license-screen','expired-screen','suspended-screen','setup-screen','checking-screen','login-screen','main-app']
+    .forEach(s => {
+      const el = document.getElementById(s);
+      if(el) el.style.display = 'none';
+    });
+  const bn = document.getElementById('bottom-nav');
+  if(bn) bn.style.display = 'none';
+  const target = document.getElementById(id);
+  if(target) target.style.display = id === 'main-app' ? 'block' : 'flex';
+}
+
+function proceedToApp(){
+  showScreen('login-screen');
+  document.getElementById('login-screen').style.display = 'block';
+}
+
+function handleLicenseResult(result, key, fromCache=false){
+  if(!result.ok){
+    if(result.status === 'expired'){
+      showScreen('expired-screen');
+      document.getElementById('exp-key').textContent = key;
+      document.getElementById('exp-date').textContent = 'Expired on: ' + (result.expiry ? new Date(result.expiry).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : 'Unknown');
+    } else {
+      // Invalid / not found
+      localStorage.removeItem(LIC_KEY_STORE);
+      localStorage.removeItem(LIC_CACHE_STORE);
+      showScreen('license-screen');
+      setTimeout(()=>{ setAl('lic-al','err', result.message || 'Invalid license key.'); }, 100);
+    }
+    return;
+  }
+
+  // License is OK — store the subscriber's Sheet details
+  if(result.sheetId)   localStorage.setItem('kahrabji_sheet_id', result.sheetId);
+  if(result.scriptUrl) localStorage.setItem('kahrabji_script_url', result.scriptUrl);
+
+  // Update the global API variable so all subsequent calls use subscriber's script
+  if(result.scriptUrl) API = result.scriptUrl;
+
+  if(result.status === 'setup_required'){
+    showScreen('setup-screen');
+    return;
+  }
+
+  if(result.status === 'suspended'){
+    showScreen('suspended-screen');
+    const days = result.daysLeft || 0;
+    document.getElementById('susp-expiry').textContent =
+      `Access continues until: ${result.expiry ? new Date(result.expiry).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : 'Unknown'} (${days} day${days===1?'':'s'} remaining)`;
+    return;
+  }
+
+  // Active or trial — go to login
+  proceedToApp();
+
+  if(fromCache){
+    setAl('login-al','warn','Working offline — license verified from cache.');
+  } else if(result.daysLeft <= 7){
+    setAl('login-al','warn',`⚠️ Your subscription expires in ${result.daysLeft} day${result.daysLeft===1?'':'s'}. Please renew soon.`);
+  } else {
+    // Welcome message with subscriber name
+    if(result.name) setAl('login-al','ok',`Welcome back, ${result.name}! 👋`);
+  }
+}
+
+async function checkLicenseOnStartup(){
+  const key = localStorage.getItem(LIC_KEY_STORE);
+  if(!key){ showScreen('license-screen'); return; }
+  showScreen('checking-screen');
+  try{
+    const r = await fetch(`${LICENSE_API}?action=validateLicense&key=${encodeURIComponent(key)}`);
+    const result = await r.json();
+    // Cache result
+    localStorage.setItem(LIC_CACHE_STORE, JSON.stringify(result));
+    localStorage.setItem(LIC_CACHE_TIME, Date.now().toString());
+    handleLicenseResult(result, key, false);
+  }catch(err){
+    // No internet — try cache
+    const cache = localStorage.getItem(LIC_CACHE_STORE);
+    const cacheTime = parseInt(localStorage.getItem(LIC_CACHE_TIME)||'0');
+    if(cache && (Date.now() - cacheTime) < CACHE_DURATION){
+      // Restore API URL from cache/storage even offline
+      const cachedScriptUrl = localStorage.getItem('kahrabji_script_url');
+      if(cachedScriptUrl) API = cachedScriptUrl;
+      handleLicenseResult(JSON.parse(cache), key, true);
+    } else {
+      // No cache — allow with warning
+      const cachedScriptUrl = localStorage.getItem('kahrabji_script_url');
+      if(cachedScriptUrl) API = cachedScriptUrl;
+      proceedToApp();
+      setAl('login-al','warn','⚠️ Could not verify license (no internet). Working in offline mode.');
+    }
+  }
+}
+
+async function activateLicense(){
+  const key = document.getElementById('lic-input').value.trim().toUpperCase();
+  if(!key){ setAl('lic-al','err','Please enter your license key.'); return; }
+  if(!/^KP-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)){
+    setAl('lic-al','err','Invalid key format. Should be: KP-XXXX-XXXX-XXXX'); return;
+  }
+  const btn = document.getElementById('lic-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin w"></span> Checking...';
+  document.getElementById('lic-al').innerHTML='';
+  try{
+    const r = await fetch(`${LICENSE_API}?action=validateLicense&key=${encodeURIComponent(key)}`);
+    const result = await r.json();
+    if(result.ok || result.status === 'expired'){
+      localStorage.setItem(LIC_KEY_STORE, key);
+      localStorage.setItem(LIC_CACHE_STORE, JSON.stringify(result));
+      localStorage.setItem(LIC_CACHE_TIME, Date.now().toString());
+    }
+    handleLicenseResult(result, key, false);
+  }catch(err){
+    setAl('lic-al','err','No internet connection. Please connect and try again.');
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-key"></i> Activate license';
+}
+
+// ── Start license check on load ──
+window.addEventListener('load', () => { checkLicenseOnStartup(); });
+// ══════════════════════════════════════════════
+
+</script>
+</body>
+</html>
