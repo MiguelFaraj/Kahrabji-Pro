@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kahraba Pro — Admin Portal</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.4.0/dist/tabler-icons.min.css"/>
+<style>
+:root{--bg:#f4f5f7;--surface:#fff;--surface2:#f7f8f9;--border:#e8e8e8;--text:#1a1a1a;--text2:#666;--text3:#999;--green:#1D9E75;--green-bg:#E1F5EE;--green-text:#0F6E56;--red:#E24B4A;--red-bg:#FAECE7;--red-text:#993C1D;--blue:#185FA5;--blue-bg:#E6F1FB;--blue-text:#185FA5;--amber:#BA7517;--amber-bg:#FAEEDA;--amber-text:#633806;--purple:#7C3AED;--purple-bg:#EDE9FE;--purple-text:#5B21B6}
+[data-theme="dark"]{--bg:#0f1117;--surface:#1c1f26;--surface2:#252830;--border:#2e3140;--text:#f0f2f5;--text2:#9ba3b5;--text3:#6b7385;--green-bg:#0d2e22;--green-text:#4dd4a0;--red-bg:#2e1515;--red-text:#f08080;--blue-bg:#0d1a2e;--blue-text:#7eb3f8;--amber-bg:#2a1f0a;--amber-text:#d4a04a;--purple-bg:#1e1535;--purple-text:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0;transition:background-color .2s,color .2s}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.logo{width:32px;height:32px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.nav-brand span{font-weight:700;font-size:15px;color:var(--text)}
+.nav-tag{font-size:10px;background:var(--red-bg);color:var(--red-text);padding:2px 8px;border-radius:99px;font-weight:600;margin-left:6px}
+.nav-user{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px}
+.nav-r{display:flex;align-items:center;gap:8px}
+.theme-btn{background:none;border:1px solid var(--border);padding:5px 8px;border-radius:8px;font-size:15px;cursor:pointer}
+/* TABS */
+.tabs{display:flex;gap:4px;padding:14px 20px 0;background:var(--surface);border-bottom:1px solid var(--border)}
+.tab{padding:8px 16px;border-radius:8px 8px 0 0;font-size:13px;font-weight:500;cursor:pointer;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;display:flex;align-items:center;gap:6px}
+.tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:600}
+.tab-page{display:none;padding:20px;max-width:1100px;margin:0 auto}
+.tab-page.active{display:block}
+/* CARDS */
+.card{background:var(--surface);border-radius:14px;padding:18px 20px;margin-bottom:16px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:var(--text)}
+.card-title-l{display:flex;align-items:center;gap:7px}
+/* STATS */
+.dash-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.dstat{background:var(--surface);border-radius:12px;padding:14px;border:1px solid var(--border);text-align:center}
+.dstat .dl{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500}
+.dstat .dv{font-size:22px;font-weight:700;color:var(--text)}
+.dstat .ds{font-size:11px;color:var(--text3);margin-top:2px}
+/* FORMS */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+.field label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green)}
+.field input[readonly]{background:var(--surface2)}
+.field .hint{font-size:11px;color:var(--text3);margin-top:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+/* BUTTONS */
+.btn-p{background:var(--green);color:#fff;border:none;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-p:hover{opacity:.9}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-p.blue{background:var(--blue)}
+.btn-p.amber{background:var(--amber)}
+.btn-p.red{background:var(--red)}
+.btn-p.wa{background:#25D366}
+.btn-p.purple{background:var(--purple)}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-ic{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--text3);font-size:15px;display:inline-flex;align-items:center}
+.btn-ic:hover{background:var(--surface2)}
+/* ALERTS */
+.al{padding:9px 13px;border-radius:9px;font-size:12px;margin-bottom:10px;display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.al.ok{background:var(--green-bg);color:var(--green-text)}
+.al.err{background:var(--red-bg);color:var(--red-text)}
+.al.info{background:var(--blue-bg);color:var(--blue-text)}
+.al.warn{background:var(--amber-bg);color:var(--amber-text)}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:9px 10px;font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface2)}
+/* TAGS */
+.tag{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag.active{background:var(--green-bg);color:var(--green-text)}
+.tag.trial{background:var(--blue-bg);color:var(--blue-text)}
+.tag.expired{background:var(--red-bg);color:var(--red-text)}
+.tag.suspended{background:var(--amber-bg);color:var(--amber-text)}
+.tag.setup{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.tag.superadmin{background:var(--purple-bg);color:var(--purple-text)}
+.tag.billing{background:var(--amber-bg);color:var(--amber-text)}
+.cfg-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:99px}
+.cfg-badge.yes{background:var(--green-bg);color:var(--green-text)}
+.cfg-badge.no{background:var(--red-bg);color:var(--red-text)}
+/* MISC */
+.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(128,128,128,.2);border-top-color:var(--green);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+.spin.w{border-color:rgba(255,255,255,.3);border-top-color:#fff}
+@keyframes sp{to{transform:rotate(360deg)}}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--green);color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-right:6px;flex-shrink:0}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border-radius:16px;padding:24px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;border:1px solid var(--border)}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:16px}
+.key-display{background:var(--surface2);border-radius:9px;padding:14px;font-family:'Courier New',monospace;font-size:18px;font-weight:700;color:var(--green-text);letter-spacing:.12em;text-align:center;border:1px dashed var(--green);margin:10px 0;cursor:pointer;user-select:all}
+/* LOGIN */
+.login-wrap{max-width:380px;margin:80px auto;padding:0 20px}
+/* REVENUE HIGHLIGHT */
+.rev-note{font-size:11px;color:var(--text3);margin-top:4px;font-style:italic}
+@media(max-width:800px){.dash-grid{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="admin-login" style="padding:20px">
+  <div class="login-wrap">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;justify-content:center">
+      <div class="logo" style="width:48px;height:48px;font-size:24px"><i class="ti ti-bolt"></i></div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--text)">Kahraba Pro</div>
+        <div style="font-size:11px;color:var(--red-text);font-weight:600;letter-spacing:.05em">ADMIN PORTAL</div>
+      </div>
+    </div>
+    <div id="login-al"></div>
+    <div class="field"><label>Username</label><input type="text" id="alu" placeholder="Enter username" autocomplete="username"/></div>
+    <div class="field"><label>Password</label><input type="password" id="alp" placeholder="Enter password" onkeydown="if(event.key==='Enter')adminLogin()" autocomplete="current-password"/></div>
+    <button class="btn-p" onclick="adminLogin()" id="login-btn" style="width:100%;justify-content:center;padding:11px;margin-top:6px">
+      <i class="ti ti-login"></i> Sign in
+    </button>
+    <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:14px">Access restricted to authorized personnel only.</p>
+  </div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="admin-app" style="display:none">
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="logo"><i class="ti ti-bolt"></i></div>
+      <span>Kahraba Pro</span>
+      <span class="nav-tag">ADMIN</span>
+    </div>
+    <div class="nav-r">
+      <div class="nav-user">
+        <i class="ti ti-user-circle"></i>
+        <span id="nav-user-name"></span>
+        <span class="tag" id="nav-user-role"></span>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+      <button class="btn-s" onclick="adminLogout()" style="font-size:12px;padding:5px 10px"><i class="ti ti-logout"></i> Sign out</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" data-tab="subscribers" onclick="switchTab('subscribers')"><i class="ti ti-users"></i> Subscribers</button>
+    <button class="tab" data-tab="add" onclick="switchTab('add')" id="tab-add"><i class="ti ti-user-plus"></i> Add subscriber</button>
+    <button class="tab" data-tab="users" onclick="switchTab('users')" id="tab-users"><i class="ti ti-shield"></i> Admin users</button>
+  </div>
+
+  <!-- ══ TAB: SUBSCRIBERS ══ -->
+  <div class="tab-page active" id="tab-subscribers">
+
+    <!-- STATS -->
+    <div class="dash-grid">
+      <div class="dstat">
+        <div class="dl">Paid subscribers</div>
+        <div class="dv" id="stat-paid" style="color:var(--green)">—</div>
+        <div class="ds">active only</div>
+      </div>
+      <div class="dstat">
+        <div class="dl">Free trials</div>
+        <div class="dv" id="stat-trial" style="color:var(--blue)">—</div>
+        <div class="ds">not billed</div>
+      </div>
+      <div class="dstat">
+        <div class="dl">Not configured</div>
+        <div class="dv" id="stat-setup" style="color:var(--amber)">—</div>
+        <div class="ds">need sheet setup</div>
+      </div>
+      <div class="dstat">
+        <div class="dl">Expired</div>
+        <div class="dv" id="stat-expired" style="color:var(--red)">—</div>
+        <div class="ds">need renewal</div>
+      </div>
+      <div class="dstat">
+        <div class="dl">Expiring soon</div>
+        <div class="dv" id="stat-expiring" style="color:var(--amber)">—</div>
+        <div class="ds">within 7 days</div>
+      </div>
+    </div>
+
+    <!-- REVENUE (paid only) -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-l"><i class="ti ti-cash"></i> Revenue — paid subscribers only</div>
+        <button class="btn-s" onclick="loadLicenses()" style="font-size:11px;padding:4px 10px"><i class="ti ti-refresh"></i> Refresh</button>
+      </div>
+      <div class="g3">
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500">Monthly revenue</div>
+          <div style="font-size:24px;font-weight:700;color:var(--green)" id="rev-monthly">—</div>
+          <div class="rev-note" id="rev-monthly-note"></div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500">Annual projection</div>
+          <div style="font-size:24px;font-weight:700;color:var(--text)" id="rev-annual">—</div>
+          <div class="rev-note">based on current paid subscribers</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500">Potential (if trials convert)</div>
+          <div style="font-size:24px;font-weight:700;color:var(--blue)" id="rev-potential">—</div>
+          <div class="rev-note" id="rev-potential-note"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPIRING SOON -->
+    <div class="card" id="expiring-card" style="display:none">
+      <div class="card-title"><div class="card-title-l" style="color:var(--amber-text)"><i class="ti ti-clock"></i> Expiring within 7 days</div></div>
+      <div id="expiring-list"></div>
+    </div>
+
+    <!-- SUBSCRIBERS TABLE -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-l"><i class="ti ti-list"></i> All subscribers</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="text" id="sub-search" placeholder="Search..." oninput="filterSubs()" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;width:170px"/>
+          <select id="sub-filter" onchange="filterSubs()" style="height:32px;padding:0 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px">
+            <option value="">All status</option>
+            <option value="active">Active (paid)</option>
+            <option value="trial">Trial</option>
+            <option value="setup_required">Not configured</option>
+            <option value="suspended">Suspended</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+      </div>
+      <div id="subs-al"></div>
+      <div id="loading-subs" style="text-align:center;padding:24px;color:var(--text2)">
+        <span class="spin"></span> Loading from Google Sheet...
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr>
+            <th>Name</th><th>Phone</th><th>Plan</th><th>Status</th>
+            <th>Expiry</th><th>Sheet</th><th>License key</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="subs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: ADD SUBSCRIBER ══ -->
+  <div class="tab-page" id="tab-add">
+    <div class="card">
+      <div class="card-title"><div class="card-title-l"><i class="ti ti-user-plus"></i> Add new subscriber</div></div>
+
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;display:flex;align-items:center">
+        <span class="step-badge">1</span> Subscriber details
+      </div>
+      <div class="g2">
+        <div class="field"><label>Full name</label><input type="text" id="sub-name" placeholder="e.g. Miguel Faraj"/></div>
+        <div class="field"><label>WhatsApp number</label><input type="tel" id="sub-phone" placeholder="96170123456"/></div>
+      </div>
+      <div class="g3">
+        <div class="field"><label>Plan</label>
+          <select id="sub-plan">
+            <option value="trial">7-day free trial</option>
+            <option value="monthly">Monthly ($9.99)</option>
+            <option value="annual">Annual ($95.88)</option>
+          </select>
+        </div>
+        <div class="field"><label>Payment method</label>
+          <select id="sub-payment">
+            <option value="wish">Wish Money</option>
+            <option value="card">Card</option>
+            <option value="trial">Trial (no payment)</option>
+          </select>
+        </div>
+        <div class="field"><label>City</label><input type="text" id="sub-city" placeholder="e.g. Beirut"/></div>
+      </div>
+
+      <div class="sep"></div>
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:flex;align-items:center">
+        <span class="step-badge">2</span> Google Sheet configuration
+        <span style="font-size:11px;color:var(--text3);font-weight:400;margin-left:8px">(optional — can be added later)</span>
+      </div>
+      <div class="al info" style="margin-bottom:12px"><i class="ti ti-info-circle"></i>
+        <span>The subscriber sets up their own Google Sheet + deploys the billing Apps Script, then sends you their Sheet ID and Script URL. You enter those here to link their app to their private data.</span>
+      </div>
+      <div class="field">
+        <label>Sheet ID</label>
+        <input type="text" id="sub-sheet-id" placeholder="e.g. 1NHHpFgM1sgr96gd7MU1alMVZq7luxbPz6lpsISksGEI"/>
+        <div class="hint">From their Google Sheet URL: docs.google.com/spreadsheets/d/<strong>THIS_PART</strong>/edit</div>
+      </div>
+      <div class="field">
+        <label>Apps Script URL</label>
+        <input type="text" id="sub-script-url" placeholder="https://script.google.com/macros/s/...../exec"/>
+        <div class="hint">From their deployed Apps Script web app</div>
+      </div>
+
+      <div id="add-sub-al"></div>
+      <button class="btn-p" onclick="addSubscriber()" id="add-sub-btn"><i class="ti ti-plus"></i> Add & generate license key</button>
+    </div>
+  </div>
+
+  <!-- ══ TAB: ADMIN USERS ══ -->
+  <div class="tab-page" id="tab-users">
+
+    <!-- ADD ADMIN USER -->
+    <div class="card" id="add-user-card">
+      <div class="card-title"><div class="card-title-l"><i class="ti ti-user-shield"></i> Add admin user</div></div>
+      <div class="al info" style="margin-bottom:14px"><i class="ti ti-info-circle"></i>
+        <span><strong>Admin</strong> — full access (add, edit, delete, suspend subscribers)<br/>
+        <strong>Billing</strong> — can add subscribers and renew, cannot delete or suspend</span>
+      </div>
+      <div class="g2">
+        <div class="field"><label>Full name</label><input type="text" id="au-name" placeholder="e.g. Sara Khalil"/></div>
+        <div class="field"><label>Username</label><input type="text" id="au-username" placeholder="e.g. sara_admin"/></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label>Password</label><input type="password" id="au-password" placeholder="Strong password"/></div>
+        <div class="field"><label>Role</label>
+          <select id="au-role">
+            <option value="admin">Admin — full access</option>
+            <option value="billing">Billing — add & renew only</option>
+          </select>
+        </div>
+      </div>
+      <div id="add-user-al"></div>
+      <button class="btn-p" onclick="addAdminUser()" id="add-user-btn"><i class="ti ti-plus"></i> Add user</button>
+    </div>
+
+    <!-- ADMIN USERS LIST -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-l"><i class="ti ti-list"></i> All admin users</div>
+        <button class="btn-s" onclick="loadAdminUsers()" style="font-size:11px;padding:4px 10px"><i class="ti ti-refresh"></i> Refresh</button>
+      </div>
+      <div id="users-al"></div>
+      <div id="loading-users" style="text-align:center;padding:20px;color:var(--text2)">
+        <span class="spin"></span> Loading...
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── LICENSE KEY MODAL ── -->
+<div class="modal-overlay" id="key-modal">
+  <div class="modal-box">
+    <div class="modal-title">✅ Subscriber added!</div>
+    <div class="modal-sub">Share this license key with <strong id="key-modal-name"></strong>. They enter it in the Kahrabji app to activate.</div>
+    <div class="key-display" id="key-display" onclick="copyKey()" title="Click to copy">—</div>
+    <p style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:14px">👆 Click the key to copy</p>
+    <div id="key-al"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-p wa" onclick="sendKeyWA()" style="flex:1;justify-content:center"><i class="ti ti-brand-whatsapp"></i> Send via WhatsApp</button>
+      <button class="btn-s" onclick="document.getElementById('key-modal').classList.remove('open')" style="flex:1;justify-content:center"><i class="ti ti-x"></i> Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT SUBSCRIBER MODAL ── -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal-box">
+    <div class="modal-title"><i class="ti ti-edit"></i> Edit subscriber</div>
+    <p class="modal-sub" id="edit-modal-sub"></p>
+    <input type="hidden" id="edit-key"/>
+    <input type="hidden" id="edit-phone-val"/>
+    <div class="field"><label>Name</label><input type="text" id="edit-name" readonly style="background:var(--surface2)"/></div>
+    <div class="sep"></div>
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">📊 Google Sheet configuration</div>
+    <div class="field">
+      <label>Sheet ID</label>
+      <input type="text" id="edit-sheet-id" placeholder="Paste Sheet ID here"/>
+      <div class="hint">From their Google Sheet URL</div>
+    </div>
+    <div class="field">
+      <label>Apps Script URL</label>
+      <input type="text" id="edit-script-url" placeholder="https://script.google.com/macros/s/...../exec"/>
+    </div>
+    <div class="sep"></div>
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px">📅 Subscription</div>
+    <div class="g2">
+      <div class="field"><label>Status</label>
+        <select id="edit-status">
+          <option value="active">Active</option>
+          <option value="trial">Trial</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
+      <div class="field"><label>Expiry date</label><input type="date" id="edit-expiry"/></div>
+    </div>
+    <div id="edit-al"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-p" onclick="saveEdit()" style="flex:1;justify-content:center"><i class="ti ti-check"></i> Save changes</button>
+      <button class="btn-s" onclick="document.getElementById('edit-modal').classList.remove('open')" style="flex:1;justify-content:center">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RENEW MODAL ── -->
+<div class="modal-overlay" id="renew-modal">
+  <div class="modal-box">
+    <div class="modal-title"><i class="ti ti-refresh"></i> Renew subscription</div>
+    <input type="hidden" id="renew-key"/>
+    <input type="hidden" id="renew-phone-val"/>
+    <div class="field"><label>Subscriber</label><input type="text" id="renew-name" readonly style="background:var(--surface2)"/></div>
+    <div class="field"><label>Current expiry</label><input type="text" id="renew-current" readonly style="background:var(--surface2)"/></div>
+    <div class="field"><label>Extend by</label>
+      <select id="renew-period">
+        <option value="7">7 days (trial extension)</option>
+        <option value="30" selected>30 days (monthly)</option>
+        <option value="365">365 days (annual)</option>
+      </select>
+    </div>
+    <div id="renew-al"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-p" onclick="confirmRenew()" style="flex:1;justify-content:center"><i class="ti ti-check"></i> Renew & notify</button>
+      <button class="btn-s" onclick="document.getElementById('renew-modal').classList.remove('open')" style="flex:1;justify-content:center">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LICENSE_API = 'https://script.google.com/macros/s/AKfycbz9ldqLiOwdFHc7PLhm3NjtAQIzNP4nB9DZMtepx25ARcr8b2e0tKBUPq1V1ae697yZ/exec';
+
+let allLicenses   = [];
+let allAdminUsers = [];
+let currentUser   = null; // logged in admin user
+let currentKey    = '';
+let currentPhone  = '';
+let currentKeyName= '';
+
+// ── THEME ──
+function initTheme(){const t=localStorage.getItem('kp_theme')||'light';document.documentElement.setAttribute('data-theme',t);const b=document.getElementById('theme-btn');if(b)b.textContent=t==='dark'?'☀️':'🌙';}
+function toggleTheme(){const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('kp_theme',t);const b=document.getElementById('theme-btn');if(b)b.textContent=t==='dark'?'☀️':'🌙';}
+initTheme();
+
+// ── HELPERS ──
+function genKey(){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';const s=()=>Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');return`KP-${s()}-${s()}-${s()}`;}
+function addDays(base,n){const d=base?new Date(base):new Date();d.setDate(d.getDate()+n);return d.toISOString().split('T')[0];}
+function today(){return new Date().toISOString().split('T')[0];}
+function daysFromNow(d){if(!d)return 999;return Math.ceil((new Date(d)-new Date())/(1000*60*60*24));}
+function fmtDate(d){if(!d)return '—';try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch(e){return String(d);}}
+function copyText(t){navigator.clipboard.writeText(t).catch(()=>{const el=document.createElement('textarea');el.value=t;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);});}
+function setAl(id,type,msg){const e=document.getElementById(id);if(e)e.innerHTML=`<div class="al ${type}"><i class="ti ti-${type==='ok'?'check':type==='err'?'alert-circle':type==='warn'?'alert-triangle':'info-circle'}"></i><span>${msg}</span></div>`;}
+function clearAl(id,ms=3000){setTimeout(()=>{const e=document.getElementById(id);if(e)e.innerHTML='';},ms);}
+async function apiPost(b){const r=await fetch(LICENSE_API,{method:'POST',body:JSON.stringify(b)});return JSON.parse(await r.text());}
+async function apiGet(a){const r=await fetch(`${LICENSE_API}?action=${a}`);return JSON.parse(await r.text());}
+
+// Compute real status
+function computeStatus(l){
+  if(l.status==='suspended') return 'suspended';
+  const days=daysFromNow(l.expiry);
+  if(days<0) return 'expired';
+  if(l.status==='trial') return 'trial';
+  if(!l.sheetId||!l.scriptUrl) return 'setup_required';
+  return 'active';
+}
+function isBillable(l){ return computeStatus(l)==='active'; }
+
+// ── AUTH ──
+async function adminLogin(){
+  const username=document.getElementById('alu').value.trim();
+  const password=document.getElementById('alp').value;
+  if(!username||!password){setAl('login-al','err','Please enter username and password.');return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Signing in...';
+  try{
+    const res=await apiPost({action:'adminLogin',username,password});
+    if(!res.ok){setAl('login-al','err',res.message||'Invalid credentials.');btn.disabled=false;btn.innerHTML='<i class="ti ti-login"></i> Sign in';return;}
+    currentUser={username,role:res.role,name:res.name};
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-app').style.display='block';
+    document.getElementById('nav-user-name').textContent=res.name||username;
+    const badge=document.getElementById('nav-user-role');
+    badge.textContent=res.role;badge.className='tag '+res.role;
+    // Show/hide tabs based on role
+    const isSuperAdmin=res.role==='superadmin';
+    const isAdmin=res.role==='admin'||isSuperAdmin;
+    document.getElementById('tab-add').style.display='';
+    document.getElementById('tab-users').style.display=isSuperAdmin?'':'none';
+    // Billing role can add but limited
+    loadLicenses();
+    if(isSuperAdmin) loadAdminUsers();
+  }catch(e){setAl('login-al','err','Connection error. Check your internet.');}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-login"></i> Sign in';
+}
+function adminLogout(){
+  currentUser=null;
+  document.getElementById('admin-login').style.display='block';
+  document.getElementById('admin-app').style.display='none';
+  document.getElementById('alu').value='';document.getElementById('alp').value='';
+  switchTab('subscribers');
+}
+
+// ── TABS ──
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));
+}
+
+// ── LOAD LICENSES ──
+async function loadLicenses(){
+  document.getElementById('loading-subs').style.display='block';
+  document.getElementById('subs-tbody').innerHTML='';
+  try{
+    const d=await apiGet('getAllLicenses');
+    if(!d.ok)throw new Error(d.message||'Failed');
+    allLicenses=d.licenses||[];
+    renderStats();renderExpiring();filterSubs();
+    document.getElementById('loading-subs').style.display='none';
+  }catch(e){
+    document.getElementById('loading-subs').innerHTML=`<div class="al err"><i class="ti ti-alert-circle"></i> ${e.message}</div>`;
+  }
+}
+
+function renderStats(){
+  // Only count PAID active subscribers for revenue
+  const paid      = allLicenses.filter(l=>computeStatus(l)==='active');
+  const trials    = allLicenses.filter(l=>computeStatus(l)==='trial');
+  const setup     = allLicenses.filter(l=>computeStatus(l)==='setup_required');
+  const expired   = allLicenses.filter(l=>computeStatus(l)==='expired');
+  const expiring  = allLicenses.filter(l=>{const d=daysFromNow(l.expiry);return d>=0&&d<=7&&computeStatus(l)!=='expired';});
+
+  document.getElementById('stat-paid').textContent    = paid.length;
+  document.getElementById('stat-trial').textContent   = trials.length;
+  document.getElementById('stat-setup').textContent   = setup.length;
+  document.getElementById('stat-expired').textContent = expired.length;
+  document.getElementById('stat-expiring').textContent= expiring.length;
+
+  // Revenue — PAID ONLY, trials = $0
+  const monthlyRev = paid.length * 9.99;
+  document.getElementById('rev-monthly').textContent = '$'+monthlyRev.toFixed(2);
+  document.getElementById('rev-monthly-note').textContent = paid.length+' paid × $9.99'+(trials.length>0?' ('+trials.length+' trial not counted)':'');
+  document.getElementById('rev-annual').textContent = '$'+(monthlyRev*12).toFixed(2);
+
+  // Potential if all trials convert
+  const potential = (paid.length + trials.length) * 9.99;
+  document.getElementById('rev-potential').textContent = '$'+potential.toFixed(2);
+  document.getElementById('rev-potential-note').textContent = 'if '+trials.length+' trial'+(trials.length===1?'':'s')+' convert';
+}
+
+function renderExpiring(){
+  const exp=allLicenses.filter(l=>{const d=daysFromNow(l.expiry);return d>=0&&d<=7;});
+  const card=document.getElementById('expiring-card');
+  if(!exp.length){card.style.display='none';return;}
+  card.style.display='block';
+  document.getElementById('expiring-list').innerHTML=exp.map(l=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-weight:600;font-size:14px;color:var(--text)">${l.name}</div>
+        <div style="font-size:12px;color:var(--amber-text)">Expires ${fmtDate(l.expiry)} — ${daysFromNow(l.expiry)} days left</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn-p amber" onclick="openRenew('${l.key.replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}','${String(l.phone||'').replace(/'/g,"\\'")}','${l.expiry||''}')" style="font-size:12px;padding:6px 12px"><i class="ti ti-refresh"></i> Renew</button>
+        <button class="btn-p wa" onclick="sendRenewalReminder('${String(l.phone||'').replace(/\D/g,'').replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}','${fmtDate(l.expiry)}')" style="font-size:12px;padding:6px 12px"><i class="ti ti-brand-whatsapp"></i> Remind</button>
+      </div>
+    </div>`).join('');
+}
+
+function filterSubs(){
+  const search=document.getElementById('sub-search').value.toLowerCase();
+  const filter=document.getElementById('sub-filter').value;
+  const filtered=allLicenses.filter(l=>{
+    const st=computeStatus(l);
+    return(!search||(l.name||'').toLowerCase().includes(search)||(String(l.phone||'')).includes(search)||(l.key||'').toLowerCase().includes(search))
+      &&(!filter||st===filter);
+  });
+  renderSubsTable(filtered);
+}
+
+function renderSubsTable(subs){
+  const tbody=document.getElementById('subs-tbody');
+  const canEdit   = currentUser&&['superadmin','admin'].includes(currentUser.role);
+  const canDelete = currentUser&&currentUser.role==='superadmin';
+  const canBilling= currentUser&&['superadmin','admin','billing'].includes(currentUser.role);
+
+  if(!subs.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">No subscribers found.</td></tr>';return;}
+  tbody.innerHTML=subs.map(l=>{
+    const st=computeStatus(l);
+    const days=daysFromNow(l.expiry);
+    const expiryHtml=st==='expired'
+      ?`<span style="color:var(--red-text);font-size:12px">${fmtDate(l.expiry)}</span>`
+      :days<=7
+        ?`<span style="color:var(--amber);font-size:12px">${fmtDate(l.expiry)} (${days}d)</span>`
+        :`<span style="font-size:12px">${fmtDate(l.expiry)}</span>`;
+    const stLabel=st==='setup_required'?'⚙️ Setup':st==='active'?'✅ Active':st;
+    const cfgBadge=l.sheetId&&l.scriptUrl
+      ?'<span class="cfg-badge yes"><i class="ti ti-check"></i> Set</span>'
+      :'<span class="cfg-badge no"><i class="ti ti-x"></i> Not set</span>';
+    const planLabel=l.plan==='trial'?'<span style="color:var(--blue-text)">Trial</span>':l.plan==='annual'?'Annual':'Monthly';
+    return`<tr>
+      <td style="font-weight:600">${l.name||'—'}</td>
+      <td><a href="https://wa.me/${String(l.phone||'').replace(/\D/g,'')}" target="_blank" style="color:var(--green);font-size:12px">${l.phone||'—'}</a></td>
+      <td style="font-size:12px">${planLabel}</td>
+      <td><span class="tag ${st}">${stLabel}</span></td>
+      <td>${expiryHtml}</td>
+      <td>${cfgBadge}</td>
+      <td><code style="font-size:11px;background:var(--surface2);padding:3px 7px;border-radius:5px;cursor:pointer" onclick="copyText('${l.key}')" title="Copy">${l.key}</code></td>
+      <td style="white-space:nowrap">
+        ${canEdit?`<button class="btn-ic" onclick="openEdit('${l.key.replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}','${String(l.phone||'').replace(/'/g,"\\'")}','${l.sheetId||''}','${(l.scriptUrl||'').replace(/'/g,"\\'")}','${l.status||'active'}','${l.expiry||''}')" title="Edit" style="color:var(--blue)"><i class="ti ti-edit"></i></button>`:''}
+        ${canBilling?`<button class="btn-ic" onclick="openRenew('${l.key.replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}','${String(l.phone||'').replace(/'/g,"\\'")}','${l.expiry||''}')" title="Renew" style="color:var(--green)"><i class="ti ti-refresh"></i></button>`:''}
+        <button class="btn-ic" onclick="sendKeyWADirect('${String(l.phone||'').replace(/\D/g,'').replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}','${l.key}')" title="Send key" style="color:#25D366"><i class="ti ti-brand-whatsapp"></i></button>
+        ${canEdit?`<button class="btn-ic" onclick="toggleSuspend('${l.key.replace(/'/g,"\\'")}','${st}')" title="${st==='suspended'?'Unsuspend':'Suspend'}" style="color:var(--amber)"><i class="ti ti-${st==='suspended'?'player-play':'ban'}"></i></button>`:''}
+        ${canDelete?`<button class="btn-ic" onclick="deleteLic('${l.key.replace(/'/g,"\\'")}','${l.name.replace(/'/g,"\\'")}' )" title="Delete" style="color:var(--red)"><i class="ti ti-trash"></i></button>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ADD SUBSCRIBER ──
+async function addSubscriber(){
+  const name     = document.getElementById('sub-name').value.trim();
+  const phone    = document.getElementById('sub-phone').value.trim();
+  const plan     = document.getElementById('sub-plan').value;
+  const payment  = document.getElementById('sub-payment').value;
+  const city     = document.getElementById('sub-city').value.trim();
+  const sheetId  = document.getElementById('sub-sheet-id').value.trim();
+  const scriptUrl= document.getElementById('sub-script-url').value.trim();
+  if(!name||!phone){setAl('add-sub-al','err','Name and phone are required.');return;}
+  const btn=document.getElementById('add-sub-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Adding...';
+  const key    = genKey();
+  const days   = plan==='trial'?7:plan==='annual'?365:30;
+  const expiry = addDays(today(),days);
+  const status = plan==='trial'?'trial':'active';
+  try{
+    const res=await apiPost({action:'addLicense',key,name,phone,plan,status,expiry,notes:city?`City:${city}|Pay:${payment}`:payment,sheetId,scriptUrl});
+    if(!res.ok)throw new Error(res.message||'Failed');
+    allLicenses.push({key,name,phone,plan,status,expiry,notes:'',sheetId,scriptUrl});
+    document.getElementById('sub-name').value='';document.getElementById('sub-phone').value='';
+    document.getElementById('sub-city').value='';document.getElementById('sub-sheet-id').value='';document.getElementById('sub-script-url').value='';
+    currentKey=key;currentPhone=phone;currentKeyName=name;
+    document.getElementById('key-display').textContent=key;
+    document.getElementById('key-modal-name').textContent=name;
+    document.getElementById('key-al').innerHTML='';
+    document.getElementById('key-modal').classList.add('open');
+    renderStats();filterSubs();renderExpiring();
+    setAl('add-sub-al','ok',`✅ ${name} added — ${days}-day ${plan}.`);clearAl('add-sub-al');
+    switchTab('subscribers');
+  }catch(e){setAl('add-sub-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-plus"></i> Add & generate license key';
+}
+
+function copyKey(){copyText(currentKey);setAl('key-al','ok','Copied!');clearAl('key-al',2000);}
+function sendKeyWA(){
+  const hasSheet=allLicenses.find(l=>l.key===currentKey);
+  const sheetNote=hasSheet&&hasSheet.sheetId?'':'⚠️ Your account still needs Google Sheet setup — we\'ll contact you to complete configuration.\n\n';
+  const msg=`🚀 *Welcome to Kahrabji!*\n\nDear ${currentKeyName},\n\nYour account is now active!\n\n🔑 Your license key:\n\n*${currentKey}*\n\n${sheetNote}How to activate:\n1️⃣ Open the Kahrabji app\n2️⃣ Enter your license key\n3️⃣ Start billing!\n\n⚠️ Keep this key private.\n📞 Support: +961 70 234 138\n\nThank you for choosing Kahrabji! ⚡`;
+  window.open('https://wa.me/'+String(currentPhone).replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank');
+}
+function sendKeyWADirect(phone,name,key){
+  const msg=`⚡ *Kahrabji — Your License Key*\n\nDear ${name},\n\nYour license key:\n\n*${key}*\n\n📞 Support: +961 70 234 138`;
+  window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');
+}
+function sendRenewalReminder(phone,name,expiry){
+  const msg=`⚠️ *Kahrabji — Subscription Expiring Soon*\n\nDear ${name},\n\nYour subscription expires on *${expiry}*.\n\nRenew now:\n💳 Wish Money: +961 70 234 138\n💬 WhatsApp: +961 70 234 138\n\nThank you! ⚡`;
+  window.open('https://wa.me/'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── EDIT ──
+function openEdit(key,name,phone,sheetId,scriptUrl,status,expiry){
+  document.getElementById('edit-key').value=key;
+  document.getElementById('edit-phone-val').value=phone;
+  document.getElementById('edit-name').value=name;
+  document.getElementById('edit-sheet-id').value=sheetId||'';
+  document.getElementById('edit-script-url').value=scriptUrl||'';
+  document.getElementById('edit-status').value=status||'active';
+  document.getElementById('edit-expiry').value=expiry?String(expiry).substring(0,10):'';
+  document.getElementById('edit-modal-sub').textContent='Editing: '+name;
+  document.getElementById('edit-al').innerHTML='';
+  document.getElementById('edit-modal').classList.add('open');
+}
+async function saveEdit(){
+  const key=document.getElementById('edit-key').value;
+  const btn=document.querySelector('[onclick="saveEdit()"]');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Saving...';
+  try{
+    const res=await apiPost({action:'updateLicense',key,sheetId:document.getElementById('edit-sheet-id').value.trim(),scriptUrl:document.getElementById('edit-script-url').value.trim(),status:document.getElementById('edit-status').value,expiry:document.getElementById('edit-expiry').value});
+    if(!res.ok)throw new Error(res.message||'Failed');
+    const lic=allLicenses.find(l=>l.key===key);
+    if(lic){lic.sheetId=document.getElementById('edit-sheet-id').value.trim();lic.scriptUrl=document.getElementById('edit-script-url').value.trim();lic.status=document.getElementById('edit-status').value;lic.expiry=document.getElementById('edit-expiry').value;}
+    setAl('edit-al','ok','✅ Saved!');renderStats();filterSubs();renderExpiring();
+    setTimeout(()=>document.getElementById('edit-modal').classList.remove('open'),1500);
+  }catch(e){setAl('edit-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Save changes';
+}
+
+// ── RENEW ──
+function openRenew(key,name,phone,expiry){
+  document.getElementById('renew-key').value=key;
+  document.getElementById('renew-phone-val').value=phone;
+  document.getElementById('renew-name').value=name;
+  document.getElementById('renew-current').value=fmtDate(expiry)||'—';
+  document.getElementById('renew-al').innerHTML='';
+  document.getElementById('renew-modal').classList.add('open');
+}
+async function confirmRenew(){
+  const key=document.getElementById('renew-key').value;
+  const phone=document.getElementById('renew-phone-val').value;
+  const name=document.getElementById('renew-name').value;
+  const days=parseInt(document.getElementById('renew-period').value);
+  const btn=document.querySelector('[onclick="confirmRenew()"]');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Renewing...';
+  const lic=allLicenses.find(l=>l.key===key);
+  const base=lic&&daysFromNow(lic.expiry)>=0?lic.expiry:today();
+  const newExpiry=addDays(base,days);
+  const newStatus=days<=7?'trial':'active';
+  try{
+    const res=await apiPost({action:'updateLicense',key,expiry:newExpiry,status:newStatus});
+    if(!res.ok)throw new Error(res.message||'Failed');
+    if(lic){lic.expiry=newExpiry;lic.status=newStatus;}
+    setAl('renew-al','ok',`Renewed ${days} days → ${fmtDate(newExpiry)}`);
+    renderStats();filterSubs();renderExpiring();
+    const msg=`✅ *Kahrabji — Subscription Renewed*\n\nDear ${name},\n\nRenewed for ${days} days.\n📅 New expiry: ${fmtDate(newExpiry)}\n🔑 Key: ${key}\n\nThank you! ⚡`;
+    setTimeout(()=>{window.open('https://wa.me/'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank');},1000);
+    setTimeout(()=>document.getElementById('renew-modal').classList.remove('open'),2000);
+  }catch(e){setAl('renew-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Renew & notify';
+}
+
+// ── SUSPEND / DELETE ──
+async function toggleSuspend(key,currentStatus){
+  const newStatus=currentStatus==='suspended'?'active':'suspended';
+  if(!confirm(`${newStatus==='suspended'?'Suspend':'Reactivate'} this account?`))return;
+  try{
+    const res=await apiPost({action:'updateLicense',key,status:newStatus});
+    if(!res.ok)throw new Error(res.message);
+    const lic=allLicenses.find(l=>l.key===key);if(lic)lic.status=newStatus;
+    renderStats();filterSubs();
+    setAl('subs-al','ok',`Account ${newStatus==='suspended'?'suspended — customer keeps access until expiry':'reactivated'}.`);clearAl('subs-al');
+  }catch(e){setAl('subs-al','err',e.message);}
+}
+async function deleteLic(key,name){
+  if(!confirm(`Permanently delete "${name}"? Cannot be undone.`))return;
+  try{
+    const res=await apiPost({action:'deleteLicense',key});
+    if(!res.ok)throw new Error(res.message);
+    allLicenses=allLicenses.filter(l=>l.key!==key);
+    renderStats();filterSubs();renderExpiring();
+    setAl('subs-al','ok',`"${name}" deleted.`);clearAl('subs-al');
+  }catch(e){setAl('subs-al','err',e.message);}
+}
+
+// ══ ADMIN USERS ══
+async function loadAdminUsers(){
+  document.getElementById('loading-users').style.display='block';
+  document.getElementById('users-tbody').innerHTML='';
+  try{
+    const d=await apiGet('getAdminUsers');
+    if(!d.ok)throw new Error(d.message||'Failed');
+    allAdminUsers=d.users||[];
+    renderUsersTable();
+    document.getElementById('loading-users').style.display='none';
+  }catch(e){
+    document.getElementById('loading-users').innerHTML=`<div class="al err"><i class="ti ti-alert-circle"></i> ${e.message}</div>`;
+  }
+}
+
+function renderUsersTable(){
+  const tbody=document.getElementById('users-tbody');
+  if(!allAdminUsers.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:20px">No users found.</td></tr>';return;}
+  tbody.innerHTML=allAdminUsers.map(u=>`
+    <tr>
+      <td style="font-weight:600">${u.name||'—'}</td>
+      <td style="font-size:12px;font-family:'Courier New',monospace">${u.username}</td>
+      <td><span class="tag ${u.role}">${u.role}</span></td>
+      <td>${u.active?'<span class="tag active">Active</span>':'<span class="tag expired">Disabled</span>'}</td>
+      <td style="white-space:nowrap">
+        ${u.username!==currentUser?.username?`
+          <button class="btn-ic" onclick="toggleUserActive('${u.username}',${u.active})" title="${u.active?'Disable':'Enable'}" style="color:${u.active?'var(--amber)':'var(--green)'}"><i class="ti ti-${u.active?'ban':'player-play'}"></i></button>
+          <button class="btn-ic" onclick="deleteAdminUser('${u.username}','${u.name||u.username}')" title="Delete" style="color:var(--red)"><i class="ti ti-trash"></i></button>
+        `:'<span style="font-size:11px;color:var(--text3)">you</span>'}
+      </td>
+    </tr>`).join('');
+}
+
+async function addAdminUser(){
+  const name    =document.getElementById('au-name').value.trim();
+  const username=document.getElementById('au-username').value.trim();
+  const password=document.getElementById('au-password').value;
+  const role    =document.getElementById('au-role').value;
+  if(!name||!username||!password){setAl('add-user-al','err','All fields are required.');return;}
+  if(username.includes(' ')){setAl('add-user-al','err','Username cannot contain spaces.');return;}
+  const btn=document.getElementById('add-user-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin w"></span> Adding...';
+  try{
+    const res=await apiPost({action:'addAdminUser',name,username,password,role,active:true});
+    if(!res.ok)throw new Error(res.message||'Failed');
+    document.getElementById('au-name').value='';document.getElementById('au-username').value='';document.getElementById('au-password').value='';
+    setAl('add-user-al','ok',`✅ "${name}" added as ${role}.`);clearAl('add-user-al');
+    await loadAdminUsers();
+  }catch(e){setAl('add-user-al','err',e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-plus"></i> Add user';
+}
+
+async function toggleUserActive(username,currentlyActive){
+  if(!confirm(`${currentlyActive?'Disable':'Enable'} user "${username}"?`))return;
+  try{
+    const res=await apiPost({action:'updateAdminUser',username,active:!currentlyActive});
+    if(!res.ok)throw new Error(res.message);
+    const u=allAdminUsers.find(x=>x.username===username);if(u)u.active=!currentlyActive;
+    renderUsersTable();
+    setAl('users-al','ok',`User "${username}" ${!currentlyActive?'enabled':'disabled'}.`);clearAl('users-al');
+  }catch(e){setAl('users-al','err',e.message);}
+}
+
+async function deleteAdminUser(username,name){
+  if(!confirm(`Permanently delete user "${name}"?`))return;
+  try{
+    const res=await apiPost({action:'deleteAdminUser',username});
+    if(!res.ok)throw new Error(res.message);
+    allAdminUsers=allAdminUsers.filter(u=>u.username!==username);
+    renderUsersTable();
+    setAl('users-al','ok',`"${name}" deleted.`);clearAl('users-al');
+  }catch(e){setAl('users-al','err',e.message);}
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));});
+</script>
+</body>
+</html>
